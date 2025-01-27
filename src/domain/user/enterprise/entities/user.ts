@@ -13,7 +13,7 @@ export interface UserProps {
   updatedAt?: Date | null
 }
 
-export class User<Props extends UserProps> extends Entity<Props> {
+export class User<Props extends UserProps = UserProps> extends Entity<Props> {
   get name() {
     return this.props.name
   }
