@@ -2,10 +2,11 @@ import { Entity } from '@/core/entities/entity'
 import { Role } from '../../@types/role'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { CPF } from './value-objects/cpf'
 
 export interface UserProps {
   name: string
-  cpf: string
+  cpf: CPF
   email: string
   password: string
   role: Role
