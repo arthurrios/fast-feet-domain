@@ -50,4 +50,28 @@ export class Address {
   toString(): string {
     return `${this.street}, ${this.number}, ${this.neighborhood}, ${this.city}, ${this.state}, ${this.zipCode}`
   }
+
+  getStreet(): string {
+    return this.street
+  }
+
+  getNumber(): string {
+    return this.number
+  }
+
+  getNeighborhood(): string {
+    return this.neighborhood
+  }
+
+  getCity(): string {
+    return this.city
+  }
+
+  getState(): string {
+    return this.state
+  }
+
+  getZipCode(): string {
+    return this.zipCode
+  }
 }
