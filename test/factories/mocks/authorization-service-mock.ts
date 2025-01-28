@@ -4,14 +4,14 @@ import { Either, left, right } from '@/core/either'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/unauthorized-admin-only-error'
 
 export function authorizationServiceMock(
-  isAdminCheck: (id: UniqueEntityID) => boolean,
+  adminId: string,
 ): AuthorizationService {
   return {
     verifyAdmin: vi.fn(
       async (
         id: UniqueEntityID,
       ): Promise<Either<UnauthorizedAdminOnlyError, void>> => {
-        if (isAdminCheck(id)) {
+        if (id.toValue() === adminId) {
           return right(undefined)
         }
         return left(new UnauthorizedAdminOnlyError())
