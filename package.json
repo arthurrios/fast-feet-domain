@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/node": "^22.10.10",
     "@vitest/coverage-v8": "^3.0.4",

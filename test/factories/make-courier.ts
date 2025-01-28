@@ -12,8 +12,8 @@ import { faker } from '@faker-js/faker'
 import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
 
 export function makeCourier(
-  courierOverride: Partial<CourierProps>,
-  userOverride: Partial<UserProps>,
+  courierOverride?: Partial<CourierProps>,
+  userOverride?: Partial<UserProps>,
   id?: UniqueEntityID,
 ) {
   const user = makeUser({ role: Role.COURIER, ...userOverride })
@@ -28,9 +28,21 @@ export function makeCourier(
       faker.location.state(),
       faker.location.zipCode(),
     ),
+    ...courierOverride,
   }
 
   const courierProps = { ...defaultCourierProps, ...courierOverride }
 
-  return Courier.create(courierProps, user, id)
+  const courier = Courier.create(courierProps, user, id)
+
+  return {
+    courier,
+    data: {
+      name: user.name,
+      email: user.email,
+      cpf: user.cpf,
+      password: faker.internet.password(),
+      address: defaultCourierProps.address,
+    },
+  }
 }

@@ -4,10 +4,10 @@ import { Courier } from '../../enterprise/entities/courier'
 import { CourierAlreadyExistsError } from './errors/courier-already-exists-error'
 import { HashGenerator } from '@/core/cryptography/hash-generator'
 import { CouriersRepository } from '../repository/courier-repository'
-import { UsersRepository } from '@/domain/user/application/repositories/users-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { Address } from '../../enterprise/entities/value-objects/address'
+import { UnauthorizedAdminOnlyError } from '@/core/errors/unauthorized-admin-only-error'
 
 interface RegisterCourierUseCaseRequest {
   requester: User
@@ -21,14 +21,13 @@ interface RegisterCourierUseCaseRequest {
 }
 
 type RegisterCourierUseCaseResponse = Either<
-  CourierAlreadyExistsError,
+  CourierAlreadyExistsError | UnauthorizedAdminOnlyError,
   { courier: Courier }
 >
 
 export class RegisterCourierUseCase {
   constructor(
     private authorizationService: AuthorizationService,
-    private usersRepository: UsersRepository,
     private couriersRepository: CouriersRepository,
     private hashGenerator: HashGenerator,
   ) {}
@@ -37,9 +36,13 @@ export class RegisterCourierUseCase {
     requester,
     data,
   }: RegisterCourierUseCaseRequest): Promise<RegisterCourierUseCaseResponse> {
-    await this.authorizationService.verifyAdmin(requester.id)
+    const authResult = await this.authorizationService.verifyAdmin(requester.id)
 
-    const courierWithSameCPF = await this.usersRepository.findByCPF(data.cpf)
+    if (authResult.isLeft()) {
+      return left(authResult.value)
+    }
+
+    const courierWithSameCPF = await this.couriersRepository.findByCPF(data.cpf)
 
     if (courierWithSameCPF) {
       return left(new CourierAlreadyExistsError(data.cpf.toString()))

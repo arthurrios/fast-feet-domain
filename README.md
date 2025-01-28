@@ -53,7 +53,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - [ ] It must be possible to list a user's deliveries.
 
 - Business Rules
-  - [ ] The application must have two types of users: courier and/or admin. 
+  - [x] The application must have two types of users: courier and/or admin. 
   - [ ] Only **admin** users can perform CRUD operations for orders. 
   - [ ] Only **admin** users can perform CRUD operations for couriers. 
   - [ ] Only **admin** users can perform CRUD operations for recipients.
