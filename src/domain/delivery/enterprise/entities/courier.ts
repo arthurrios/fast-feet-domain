@@ -5,7 +5,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Role } from '@/domain/user/@types/role'
 
 export interface CourierProps {
-  orders: CourierOrderList
+  orders?: CourierOrderList | null
   address: Address
 }
 
@@ -38,7 +38,7 @@ export class Courier {
 
   static create(
     props: CourierProps,
-    userProps: UserProps,
+    userProps: Omit<UserProps, 'role' | 'createdAt'>,
     id?: UniqueEntityID,
   ): Courier {
     const user = User.create(
@@ -50,6 +50,10 @@ export class Courier {
       id,
     )
 
-    return new Courier(user, props.orders, props.address)
+    return new Courier(
+      user,
+      props.orders ?? new CourierOrderList(),
+      props.address,
+    )
   }
 }
