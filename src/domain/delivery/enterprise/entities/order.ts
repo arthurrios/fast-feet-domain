@@ -6,8 +6,8 @@ import { Address } from './value-objects/address'
 import { Optional } from '@/core/types/optional'
 
 export interface OrderProps {
-  courierId: UniqueEntityID
-  recipientId: UniqueEntityID
+  courierId?: UniqueEntityID | null
+  recipientId?: UniqueEntityID
   title: string
   description: string
   slug: Slug
