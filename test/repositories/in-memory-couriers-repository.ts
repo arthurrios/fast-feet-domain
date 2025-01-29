@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { CouriersRepository } from '@/domain/delivery/application/repository/courier-repository'
 import { Courier } from '@/domain/delivery/enterprise/entities/courier'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
@@ -5,7 +6,7 @@ import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 export class InMemoryCouriersRepository implements CouriersRepository {
   public items: Courier[] = []
   async findById(id: string): Promise<Courier | null> {
-    const courier = this.items.find((item) => item.user.id.toString() === id)
+    const courier = this.items.find((item) => item.id.toString() === id)
 
     if (!courier) {
       return null
@@ -15,7 +16,7 @@ export class InMemoryCouriersRepository implements CouriersRepository {
   }
 
   async findByCPF(cpf: CPF): Promise<Courier | null> {
-    const courier = this.items.find((item) => item.user.cpf === cpf)
+    const courier = this.items.find((item) => item.cpf === cpf)
 
     if (!courier) {
       return null
@@ -25,6 +26,8 @@ export class InMemoryCouriersRepository implements CouriersRepository {
   }
 
   async create(courier: Courier): Promise<void> {
+    DomainEvents.dispatchEventsForAggregate(courier.id)
+
     this.items.push(courier)
   }
 }

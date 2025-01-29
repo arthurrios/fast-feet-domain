@@ -3,46 +3,35 @@ import {
   Courier,
   CourierProps,
 } from '@/domain/delivery/enterprise/entities/courier'
-import { UserProps } from '@/domain/user/enterprise/entities/user'
-import { makeUser } from './make-user'
-import { Role } from '@/domain/user/@types/role'
 import { CourierOrderList } from '@/domain/delivery/enterprise/entities/courier-order-list'
 import { Address } from '@/domain/delivery/enterprise/entities/value-objects/address'
 import { faker } from '@faker-js/faker'
 import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
+import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
+import { generateValidCpf } from './faker-utils/generate-valid-cpf'
 
 export function makeCourier(
-  courierOverride?: Partial<CourierProps>,
-  userOverride?: Partial<UserProps>,
+  override?: Partial<CourierProps>,
   id?: UniqueEntityID,
 ) {
-  const user = makeUser({ role: Role.COURIER, ...userOverride })
-
-  const defaultCourierProps: CourierProps = {
-    orders: new CourierOrderList(),
-    address: Address.create(
-      faker.location.streetAddress(),
-      faker.number.int().toString(),
-      getRandomNeighborhood(),
-      faker.location.city(),
-      faker.location.state(),
-      faker.location.zipCode(),
-    ),
-    ...courierOverride,
-  }
-
-  const courierProps = { ...defaultCourierProps, ...courierOverride }
-
-  const courier = Courier.create(courierProps, user, id)
-
-  return {
-    courier,
-    data: {
-      name: user.name,
-      email: user.email,
-      cpf: user.cpf,
+  const courier = Courier.create(
+    {
+      name: faker.person.fullName(),
+      cpf: CPF.create(generateValidCpf()),
+      email: faker.internet.email(),
       password: faker.internet.password(),
-      address: defaultCourierProps.address,
+      orders: new CourierOrderList(),
+      address: Address.create(
+        faker.location.streetAddress(),
+        faker.number.int().toString(),
+        getRandomNeighborhood(),
+        faker.location.city(),
+        faker.location.state(),
+        faker.location.zipCode(),
+      ),
+      ...override,
     },
-  }
+    id,
+  )
+  return courier
 }

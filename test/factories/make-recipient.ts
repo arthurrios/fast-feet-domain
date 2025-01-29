@@ -33,11 +33,11 @@ export function makeRecipient(
 
   const recipientProps = { ...defaultRecipientProps, ...recipientOverride }
 
-  const recipient = Recipient.create(recipientProps, user, id)
+  const data = Recipient.create(recipientProps, user, id)
 
   return {
-    recipient,
-    data: {
+    data,
+    user: {
       name: user.name,
       email: user.email,
       cpf: user.cpf,

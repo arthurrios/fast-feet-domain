@@ -1,59 +1,29 @@
-import { User, UserProps } from '@/domain/user/enterprise/entities/user'
 import { RecipientOrderList } from './recipient-order-list'
 import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Role } from '@/domain/user/@types/role'
+import { Entity } from '@/core/entities/entity'
 
 export interface RecipientProps {
   orders?: RecipientOrderList | null
   address: Address
 }
 
-export class Recipient {
-  private _user: User
-  private ordersList: RecipientOrderList
-  private addressDetails: Address
-
-  constructor(
-    user: User,
-    ordersList: RecipientOrderList,
-    addressDetails: Address,
-  ) {
-    this._user = user
-    this.ordersList = ordersList
-    this.addressDetails = addressDetails
-  }
-
+export class Recipient extends Entity<RecipientProps> {
   get orders() {
-    return this.ordersList
+    return this.props.orders
   }
 
   get address() {
-    return this.addressDetails
+    return this.props.address
   }
 
-  get user() {
-    return this._user
-  }
-
-  static create(
-    props: RecipientProps,
-    userProps: Omit<UserProps, 'role' | 'createdAt'>,
-    id?: UniqueEntityID,
-  ): Recipient {
-    const user = User.create(
+  static create(props: RecipientProps, id?: UniqueEntityID): Recipient {
+    return new Recipient(
       {
-        ...userProps,
-        role: Role.RECIPIENT,
-        createdAt: new Date(),
+        orders: props.orders ?? new RecipientOrderList(),
+        address: props.address,
       },
       id,
-    )
-
-    return new Recipient(
-      user,
-      props.orders ?? new RecipientOrderList(),
-      props.address,
     )
   }
 }

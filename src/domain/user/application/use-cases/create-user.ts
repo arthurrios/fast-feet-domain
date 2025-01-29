@@ -3,7 +3,7 @@ import { Either, left, right } from '@/core/either'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-import { HashGenerator } from '@/core/cryptography/hash-generator'
+import { HashGenerator } from '@/domain/user/application/cryptography/hash-generator'
 import { Role } from '../../@types/role'
 
 interface CreateUserUseCaseRequest {

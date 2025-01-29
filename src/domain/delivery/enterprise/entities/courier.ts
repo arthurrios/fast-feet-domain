@@ -1,59 +1,56 @@
-import { User, UserProps } from '@/domain/user/enterprise/entities/user'
 import { CourierOrderList } from './courier-order-list'
 import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Role } from '@/domain/user/@types/role'
+import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { CourierRegisteredEvent } from '../events/courier-registered-event'
 
 export interface CourierProps {
+  name: string
+  cpf: CPF
+  email: string
+  password: string
   orders?: CourierOrderList | null
   address: Address
 }
 
-export class Courier {
-  private _user: User
-  private ordersList: CourierOrderList
-  private addressDetails: Address
+export class Courier extends AggregateRoot<CourierProps> {
+  get name() {
+    return this.props.name
+  }
 
-  constructor(
-    user: User,
-    ordersList: CourierOrderList,
-    addressDetails: Address,
-  ) {
-    this._user = user
-    this.ordersList = ordersList
-    this.addressDetails = addressDetails
+  get cpf() {
+    return this.props.cpf
+  }
+
+  get email() {
+    return this.props.email
+  }
+
+  get password() {
+    return this.props.password
   }
 
   get orders() {
-    return this.ordersList
+    return this.props.orders
   }
 
   get address() {
-    return this.addressDetails
+    return this.props.address
   }
 
-  get user() {
-    return this._user
-  }
-
-  static create(
-    props: CourierProps,
-    userProps: Omit<UserProps, 'role' | 'createdAt'>,
-    id?: UniqueEntityID,
-  ): Courier {
-    const user = User.create(
+  static create(props: CourierProps, id?: UniqueEntityID): Courier {
+    const courier = new Courier(
       {
-        ...userProps,
-        role: Role.COURIER,
-        createdAt: new Date(),
+        ...props,
+        orders: props.orders ?? new CourierOrderList(),
+        address: props.address,
       },
       id,
     )
 
-    return new Courier(
-      user,
-      props.orders ?? new CourierOrderList(),
-      props.address,
-    )
+    courier.addDomainEvent(new CourierRegisteredEvent(courier))
+
+    return courier
   }
 }
