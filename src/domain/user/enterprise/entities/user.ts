@@ -43,10 +43,6 @@ export class User<Props extends UserProps = UserProps> extends Entity<Props> {
     return this.props.role
   }
 
-  get isAdmin() {
-    return this.props.role === Role.ADMIN
-  }
-
   static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityID) {
     const user = new User(
       {
