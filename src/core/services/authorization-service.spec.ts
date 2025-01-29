@@ -3,7 +3,7 @@ import { AuthorizationService } from './authorization-service'
 import { UniqueEntityID } from '../entities/unique-entity-id'
 import { makeUser } from 'test/factories/make-user'
 import { Role } from '@/domain/user/@types/role'
-import { UnauthorizedAdminOnlyError } from '../errors/unauthorized-admin-only-error'
+import { UnauthorizedAdminOnlyError } from '../errors/errors/unauthorized-admin-only-error'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let authorizationService: AuthorizationService

@@ -9,7 +9,7 @@ import { makeRecipient } from 'test/factories/make-recipient'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { generateValidCpf } from 'test/factories/faker-utils/generate-valid-cpf'
 import { authorizationServiceMock } from 'test/factories/mocks/authorization-service-mock'
-import { UnauthorizedAdminOnlyError } from '@/core/errors/unauthorized-admin-only-error'
+import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 
 let authorizationService: AuthorizationService
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository

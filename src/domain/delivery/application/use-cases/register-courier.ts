@@ -7,7 +7,7 @@ import { CouriersRepository } from '../repository/courier-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { Address } from '../../enterprise/entities/value-objects/address'
-import { UnauthorizedAdminOnlyError } from '@/core/errors/unauthorized-admin-only-error'
+import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 
 interface RegisterCourierUseCaseRequest {
   requester: User

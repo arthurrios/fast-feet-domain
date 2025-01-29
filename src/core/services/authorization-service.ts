@@ -1,6 +1,6 @@
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository'
 import { Either, left, right } from '../either'
-import { UnauthorizedAdminOnlyError } from '../errors/unauthorized-admin-only-error'
+import { UnauthorizedAdminOnlyError } from '../errors/errors/unauthorized-admin-only-error'
 import { UniqueEntityID } from '../entities/unique-entity-id'
 
 export class AuthorizationService {
