@@ -19,7 +19,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
 
 - Use Cases
   - [ ] It must be possible to perform CRUD operations for couriers
-    - [ ] It must be possible to create a new courier
+    - [x] It must be possible to create a new courier
     - [ ] It must be possible to update an existing courier
     - [ ] It must be possible to delete an existing courier
   - [ ] It must be possible to perform CRUD operations for orders
@@ -27,7 +27,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
     - [ ] It must be possible to update an existing order
     - [ ] It must be possible to delete an existing order
   - [ ] It must be possible to perform CRUD operations for recipient
-    - [ ] It must be possible to create a new recipient
+    - [x] It must be possible to create a new recipient
     - [ ] It must be possible to update an existing recipient
     - [ ] It must be possible to delete an existing recipient
   
