@@ -75,14 +75,18 @@ export class Order extends Entity<OrderProps> {
   }
 
   static create(
-    props: Optional<OrderProps, 'createdAt' | 'slug' | 'status'>,
+    props: Optional<OrderProps, 'createdAt' | 'slug' | 'status' | 'courierId'>,
     id?: UniqueEntityID,
   ) {
     const order = new Order(
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        status: props.status ?? OrderStatus.AWAITING_COURIER,
+        status:
+          props.status ??
+          (props.courierId
+            ? OrderStatus.AWAITING_COURIER
+            : OrderStatus.PENDING),
         createdAt: props.createdAt ?? new Date(),
       },
       id,

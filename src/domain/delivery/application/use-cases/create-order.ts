@@ -6,11 +6,10 @@ import { CouriersRepository } from '../repository/courier-repository'
 import { RecipientsRepository } from '../repository/recipient-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { OrdersRepository } from '../repository/orders-repository'
-import { User } from '@/domain/user/enterprise/entities/user'
 import { AuthorizationService } from '@/core/services/authorization-service'
 
 interface CreateOrderUseCaseRequest {
-  requester: User
+  requesterId: string
   recipientId: string
   courierId?: string
   title: string
@@ -32,14 +31,16 @@ export class CreateOrderUseCase {
   ) {}
 
   async execute({
-    requester,
+    requesterId,
     recipientId,
     courierId,
     title,
     description,
     address,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(requester.id)
+    const authResult = await this.authorizationService.verifyAdmin(
+      new UniqueEntityID(requesterId),
+    )
 
     if (authResult.isLeft()) {
       return left(authResult.value)
@@ -61,7 +62,7 @@ export class CreateOrderUseCase {
 
     const order = Order.create({
       recipientId: new UniqueEntityID(recipientId),
-      courierId: courierId ? new UniqueEntityID(courierId) : undefined,
+      courierId: courierId ? new UniqueEntityID(courierId) : null,
       title,
       description,
       address,

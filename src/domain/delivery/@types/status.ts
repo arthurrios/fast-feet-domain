@@ -1,6 +1,7 @@
 export enum OrderStatus {
-  AWAITING_COURIER = 'awaiting_courier',
-  IN_TRANSIT = 'in_transit',
-  DELIVERED = 'delivered',
-  RETURNED = 'returned',
+  PENDING = 'PENDING',
+  AWAITING_COURIER = 'AWAITING_COURIER',
+  IN_TRANSIT = 'IN_TRANSIT',
+  DELIVERED = 'DELIVERED',
+  RETURNED = 'RETURNED',
 }

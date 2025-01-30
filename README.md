@@ -23,7 +23,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
     - [ ] It must be possible to update an existing courier
     - [ ] It must be possible to delete an existing courier
   - [ ] It must be possible to perform CRUD operations for orders
-    - [ ] It must be possible to create a new order
+    - [x] It must be possible to create a new order
     - [ ] It must be possible to update an existing order
     - [ ] It must be possible to delete an existing order
   - [ ] It must be possible to perform CRUD operations for recipient
