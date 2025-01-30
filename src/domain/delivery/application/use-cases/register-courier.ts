@@ -1,16 +1,16 @@
 import { Either, left, right } from '@/core/either'
-import { User } from '@/domain/user/enterprise/entities/user'
 import { Courier } from '../../enterprise/entities/courier'
 import { CourierAlreadyExistsError } from './errors/courier-already-exists-error'
-import { HashGenerator } from '@/core/cryptography/hash-generator'
+import { HashGenerator } from '@/domain/user/application/cryptography/hash-generator'
 import { CouriersRepository } from '../repository/courier-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { Address } from '../../enterprise/entities/value-objects/address'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface RegisterCourierUseCaseRequest {
-  requester: User
+  requesterId: string
   data: {
     name: string
     email: string
@@ -33,10 +33,12 @@ export class RegisterCourierUseCase {
   ) {}
 
   async execute({
-    requester,
+    requesterId,
     data,
   }: RegisterCourierUseCaseRequest): Promise<RegisterCourierUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(requester.id)
+    const authResult = await this.authorizationService.verifyAdmin(
+      new UniqueEntityID(requesterId),
+    )
 
     if (authResult.isLeft()) {
       return left(authResult.value)
@@ -50,13 +52,10 @@ export class RegisterCourierUseCase {
 
     const hashedPassword = await this.hashGenerator.hash(data.password)
 
-    const courier = Courier.create(
-      { address: data.address },
-      {
-        ...data,
-        password: hashedPassword,
-      },
-    )
+    const courier = Courier.create({
+      ...data,
+      password: hashedPassword,
+    })
 
     await this.couriersRepository.create(courier)
 

@@ -2,6 +2,7 @@ import { UsersRepository } from '@/domain/user/application/repositories/users-re
 import { Either, left, right } from '../either'
 import { UnauthorizedAdminOnlyError } from '../errors/errors/unauthorized-admin-only-error'
 import { UniqueEntityID } from '../entities/unique-entity-id'
+import { Role } from '@/domain/user/@types/role'
 
 export class AuthorizationService {
   constructor(private usersRepository: UsersRepository) {}
@@ -11,7 +12,7 @@ export class AuthorizationService {
   ): Promise<Either<UnauthorizedAdminOnlyError, void>> {
     const user = await this.usersRepository.findById(id.toValue())
 
-    if (!user || !user.isAdmin) {
+    if (!user || user.role !== Role.ADMIN) {
       console.warn(
         `Authorization denied. User with ID: ${id.toValue()} attempted to access an admin-only resource.`,
       )

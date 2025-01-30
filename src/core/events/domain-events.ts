@@ -35,7 +35,14 @@ export class DomainEvents {
   private static findMarkedAggregateByID(
     id: UniqueEntityID,
   ): AggregateRoot<unknown> | undefined {
-    return this.markedAggregates.find((aggregate) => aggregate.id.equals(id))
+    return this.markedAggregates.find((aggregate) => {
+      if (!(aggregate.id instanceof UniqueEntityID)) {
+        console.warn('ID corrompido, não podemos modificar:', aggregate.id)
+        return false // Or handle accordingly
+      }
+
+      return aggregate.id.equals(id)
+    })
   }
 
   public static dispatchEventsForAggregate(id: UniqueEntityID) {
