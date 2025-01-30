@@ -1,16 +1,16 @@
 import { Either, left, right } from '@/core/either'
-import { User } from '@/domain/user/enterprise/entities/user'
 import { Recipient } from '../../enterprise/entities/recipient'
 import { RecipientAlreadyExistsError } from './errors/recipient-already-exists-error'
-import { HashGenerator } from '@/core/cryptography/hash-generator'
+import { HashGenerator } from '@/domain/user/application/cryptography/hash-generator'
 import { RecipientsRepository } from '../repository/recipient-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { Address } from '../../enterprise/entities/value-objects/address'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface RegisterRecipientUseCaseRequest {
-  requester: User
+  requesterId: string
   data: {
     name: string
     email: string
@@ -33,32 +33,31 @@ export class RegisterRecipientUseCase {
   ) {}
 
   async execute({
-    requester,
+    requesterId,
     data,
   }: RegisterRecipientUseCaseRequest): Promise<RegisterRecipientUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(requester.id)
+    const authResult = await this.authorizationService.verifyAdmin(
+      new UniqueEntityID(requesterId),
+    )
 
     if (authResult.isLeft()) {
       return left(authResult.value)
     }
 
-    const recipientWithSameCPF = await this.recipientsRepository.findByCPF(
+    const courierWithSameCPF = await this.recipientsRepository.findByCPF(
       data.cpf,
     )
 
-    if (recipientWithSameCPF) {
+    if (courierWithSameCPF) {
       return left(new RecipientAlreadyExistsError(data.cpf.toString()))
     }
 
     const hashedPassword = await this.hashGenerator.hash(data.password)
 
-    const recipient = Recipient.create(
-      { address: data.address },
-      {
-        ...data,
-        password: hashedPassword,
-      },
-    )
+    const recipient = Recipient.create({
+      ...data,
+      password: hashedPassword,
+    })
 
     await this.recipientsRepository.create(recipient)
 

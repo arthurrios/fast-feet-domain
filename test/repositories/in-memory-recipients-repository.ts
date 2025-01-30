@@ -5,7 +5,7 @@ import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 export class InMemoryRecipientsRepository implements RecipientsRepository {
   public items: Recipient[] = []
   async findById(id: string): Promise<Recipient | null> {
-    const recipient = this.items.find((item) => item.user.id.toString() === id)
+    const recipient = this.items.find((item) => item.id.toString() === id)
 
     if (!recipient) {
       return null
@@ -15,7 +15,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
   }
 
   async findByCPF(cpf: CPF): Promise<Recipient | null> {
-    const recipient = this.items.find((item) => item.user.cpf === cpf)
+    const recipient = this.items.find((item) => item.cpf === cpf)
 
     if (!recipient) {
       return null

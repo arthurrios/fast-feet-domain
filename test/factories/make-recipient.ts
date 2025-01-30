@@ -3,46 +3,36 @@ import {
   Recipient,
   RecipientProps,
 } from '@/domain/delivery/enterprise/entities/recipient'
-import { UserProps } from '@/domain/user/enterprise/entities/user'
-import { makeUser } from './make-user'
-import { Role } from '@/domain/user/@types/role'
 import { RecipientOrderList } from '@/domain/delivery/enterprise/entities/recipient-order-list'
 import { Address } from '@/domain/delivery/enterprise/entities/value-objects/address'
 import { faker } from '@faker-js/faker'
 import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
+import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
+import { generateValidCpf } from './faker-utils/generate-valid-cpf'
 
 export function makeRecipient(
-  recipientOverride?: Partial<RecipientProps>,
-  userOverride?: Partial<UserProps>,
+  override?: Partial<RecipientProps>,
   id?: UniqueEntityID,
 ) {
-  const user = makeUser({ role: Role.RECIPIENT, ...userOverride })
-
-  const defaultRecipientProps: RecipientProps = {
-    orders: new RecipientOrderList(),
-    address: Address.create(
-      faker.location.streetAddress(),
-      faker.number.int().toString(),
-      getRandomNeighborhood(),
-      faker.location.city(),
-      faker.location.state(),
-      faker.location.zipCode(),
-    ),
-    ...recipientOverride,
-  }
-
-  const recipientProps = { ...defaultRecipientProps, ...recipientOverride }
-
-  const data = Recipient.create(recipientProps, user, id)
-
-  return {
-    data,
-    user: {
-      name: user.name,
-      email: user.email,
-      cpf: user.cpf,
+  const recipient = Recipient.create(
+    {
+      name: faker.person.fullName(),
+      cpf: CPF.create(generateValidCpf()),
+      email: faker.internet.email(),
       password: faker.internet.password(),
-      address: defaultRecipientProps.address,
+      orders: new RecipientOrderList(),
+      address: Address.create(
+        faker.location.streetAddress(),
+        faker.number.int().toString(),
+        getRandomNeighborhood(),
+        faker.location.city(),
+        faker.location.state(),
+        faker.location.zipCode(),
+      ),
+      ...override,
     },
-  }
+    id,
+  )
+
+  return recipient
 }

@@ -3,11 +3,7 @@ import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipi
 import { RegisterRecipientUseCase } from './register-recipient'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Role } from '@/domain/user/@types/role'
-import { makeUser } from 'test/factories/make-user'
 import { makeRecipient } from 'test/factories/make-recipient'
-import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
-import { generateValidCpf } from 'test/factories/faker-utils/generate-valid-cpf'
 import { authorizationServiceMock } from 'test/factories/mocks/authorization-service-mock'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 
@@ -32,51 +28,28 @@ describe('Register Recipient', () => {
 
   it('should register a new recipient succesfully', async () => {
     const adminId = new UniqueEntityID('admin-id-123')
-    const adminUser = makeUser({ role: Role.ADMIN }, adminId)
 
-    const { recipient, data } = makeRecipient({}, {}, new UniqueEntityID('1'))
-
-    inMemoryRecipientsRepository.items.push(recipient)
+    const recipient = makeRecipient()
 
     const result = await sut.execute({
-      requester: adminUser,
-      data,
+      requesterId: adminId.toString(),
+      data: recipient,
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryRecipientsRepository.items[0]).toMatchObject({
-      _user: {
-        _id: recipient.user.id,
-      },
+    expect(result.value).toEqual({
+      recipient: inMemoryRecipientsRepository.items[0],
     })
   })
-  it('should hash recipient password upon registration', async () => {
-    const adminId = new UniqueEntityID('admin-id-123')
-    const adminUser = makeUser({ role: Role.ADMIN }, adminId)
 
-    const { data } = makeRecipient()
-
-    const hashedPassword = await fakeHasher.hash(data.password)
-
-    const result = await sut.execute({
-      requester: adminUser,
-      data,
-    })
-
-    expect(result.isRight()).toBe(true)
-    expect(inMemoryRecipientsRepository.items[0].user.password).toEqual(
-      hashedPassword,
-    )
-  })
   it('should not register recipient if requester is not admin', async () => {
     const requesterId = new UniqueEntityID('requester-id-123')
-    const requesterUser = makeUser({}, requesterId)
 
-    const { data } = makeRecipient()
+    const recipient = makeRecipient()
 
     const result = await sut.execute({
-      requester: requesterUser,
-      data,
+      requesterId: requesterId.toString(),
+      data: recipient,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -84,19 +57,15 @@ describe('Register Recipient', () => {
   })
   it('should not register recipient if cpf is already in use', async () => {
     const adminId = new UniqueEntityID('admin-id-123')
-    const adminUser = makeUser({ role: Role.ADMIN }, adminId)
 
-    const { data } = makeRecipient({}, { cpf: CPF.create(generateValidCpf()) })
-    const { data: newRecipientData } = makeRecipient({}, { cpf: data.cpf })
+    const recipient = makeRecipient()
 
-    await sut.execute({
-      requester: adminUser,
-      data,
-    })
+    inMemoryRecipientsRepository.items.push(recipient)
+    const newRecipient = makeRecipient({ cpf: recipient.cpf })
 
     const result = await sut.execute({
-      requester: adminUser,
-      data: newRecipientData,
+      requesterId: adminId.toString(),
+      data: newRecipient,
     })
 
     expect(result.isLeft()).toBe(true)
