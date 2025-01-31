@@ -27,4 +27,10 @@ export class InMemoryUsersRepository implements UsersRepository {
   async create(user: User): Promise<void> {
     this.items.push(user)
   }
+
+  async save(user: User): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === user.id)
+
+    this.items[itemIndex] = user
+  }
 }

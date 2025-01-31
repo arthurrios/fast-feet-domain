@@ -5,7 +5,7 @@ import { makeUser } from 'test/factories/make-user'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { generateValidCpf } from 'test/factories/faker-utils/generate-valid-cpf'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
-import { AuthenticateUseCase } from './authenticate'
+import { AuthenticateUseCase } from './authenticate-user'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let fakeHasher: FakeHasher

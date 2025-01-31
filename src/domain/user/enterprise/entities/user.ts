@@ -54,4 +54,8 @@ export class User<Props extends UserProps = UserProps> extends Entity<Props> {
 
     return user
   }
+
+  changePassword(newPassword: string) {
+    this.props.password = newPassword
+  }
 }
