@@ -48,7 +48,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - User
 
 - Use Cases
-  - [ ] It must be possible to log in using CPF and password.
+  - [x] It must be possible to log in using CPF and password.
   - [ ] It must be possible to change a user's password.
   - [ ] It must be possible to list a user's deliveries.
 

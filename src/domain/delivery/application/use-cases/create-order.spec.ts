@@ -9,8 +9,6 @@ import { CreateOrderUseCase } from './create-order'
 import { makeRecipient } from 'test/factories/make-recipient'
 import { AddressMock } from 'test/factories/mocks/address-mock'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { OrderStatus } from '../../@types/status'
-import { makeCourier } from 'test/factories/make-courier'
 
 let authorizationService: AuthorizationService
 let inMemoryCouriersRepository: InMemoryCouriersRepository
@@ -56,7 +54,6 @@ describe('Create order', () => {
     expect(result.value).toEqual({
       order: expect.objectContaining({
         courierId: null,
-        status: OrderStatus.PENDING,
       }),
     })
   })
@@ -110,36 +107,5 @@ describe('Create order', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(ResourceNotFoundError)
-  })
-  it('should create order with status AWAITING_COURIER if courier is provided', async () => {
-    const adminId = new UniqueEntityID('admin-id-123')
-
-    const recipient = makeRecipient()
-
-    inMemoryRecipientsRepository.items.push(recipient)
-
-    const courier = makeCourier()
-
-    inMemoryCouriersRepository.items.push(courier)
-
-    const result = await sut.execute({
-      requesterId: adminId.toString(),
-      recipientId: recipient.id.toString(),
-      courierId: courier.id.toString(),
-      title: 'Order Title',
-      description: 'Order description',
-      address: AddressMock,
-    })
-
-    expect(result.isRight()).toBe(true)
-    expect(result.value).toEqual({
-      order: inMemoryOrdersRepository.items[0],
-    })
-    expect(result.value).toEqual({
-      order: expect.objectContaining({
-        courierId: courier.id,
-        status: OrderStatus.AWAITING_COURIER,
-      }),
-    })
   })
 })

@@ -82,11 +82,7 @@ export class Order extends Entity<OrderProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        status:
-          props.status ??
-          (props.courierId
-            ? OrderStatus.AWAITING_COURIER
-            : OrderStatus.PENDING),
+        status: props.status ?? OrderStatus.AWAITING,
         createdAt: props.createdAt ?? new Date(),
       },
       id,
