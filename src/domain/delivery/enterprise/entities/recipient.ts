@@ -3,6 +3,7 @@ import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Entity } from '@/core/entities/entity'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
+import { UserLinkedEntity } from '../../../../core/shared/entities/user-linked-entity'
 
 export interface RecipientProps {
   name: string
@@ -13,7 +14,10 @@ export interface RecipientProps {
   address: Address
 }
 
-export class Recipient extends Entity<RecipientProps> {
+export class Recipient
+  extends Entity<RecipientProps>
+  implements UserLinkedEntity
+{
   get name() {
     return this.props.name
   }

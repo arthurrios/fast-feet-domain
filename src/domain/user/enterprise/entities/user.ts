@@ -1,8 +1,9 @@
-import { Entity } from '@/core/entities/entity'
 import { Role } from '../../@types/role'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { CPF } from './value-objects/cpf'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { UserPasswordChangedEvent } from '../events/user-password-changed-event'
 
 export interface UserProps {
   name: string
@@ -14,7 +15,9 @@ export interface UserProps {
   updatedAt?: Date | null
 }
 
-export class User<Props extends UserProps = UserProps> extends Entity<Props> {
+export class User<
+  Props extends UserProps = UserProps,
+> extends AggregateRoot<Props> {
   get name() {
     return this.props.name
   }
@@ -57,5 +60,7 @@ export class User<Props extends UserProps = UserProps> extends Entity<Props> {
 
   changePassword(newPassword: string) {
     this.props.password = newPassword
+
+    this.addDomainEvent(new UserPasswordChangedEvent(this))
   }
 }

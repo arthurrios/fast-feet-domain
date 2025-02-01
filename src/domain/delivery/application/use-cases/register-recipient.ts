@@ -44,7 +44,7 @@ export class RegisterRecipientUseCase {
       return left(authResult.value)
     }
 
-    const courierWithSameCPF = await this.recipientsRepository.findByCPF(
+    const courierWithSameCPF = await this.recipientsRepository.findByCpf(
       data.cpf,
     )
 

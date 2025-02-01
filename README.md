@@ -49,7 +49,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
 
 - Use Cases
   - [x] It must be possible to log in using CPF and password.
-  - [ ] It must be possible to change a user's password.
+  - [x] It must be possible to change a user's password.
   - [ ] It must be possible to list a user's deliveries.
 
 - Business Rules
@@ -57,7 +57,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - [ ] Only **admin** users can perform CRUD operations for orders. 
   - [ ] Only **admin** users can perform CRUD operations for couriers. 
   - [ ] Only **admin** users can perform CRUD operations for recipients.
-  - [ ] Only the admin can change a user's password.
+  - [x] Only the admin can change a user's password.
 
 ### Notification
 

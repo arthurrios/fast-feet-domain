@@ -4,6 +4,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { CourierRegisteredEvent } from '../events/courier-registered-event'
+import { UserLinkedEntity } from '../../../../core/shared/entities/user-linked-entity'
 
 export interface CourierProps {
   name: string
@@ -14,7 +15,10 @@ export interface CourierProps {
   address: Address
 }
 
-export class Courier extends AggregateRoot<CourierProps> {
+export class Courier
+  extends AggregateRoot<CourierProps>
+  implements UserLinkedEntity
+{
   get name() {
     return this.props.name
   }

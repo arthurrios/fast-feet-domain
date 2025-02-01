@@ -70,4 +70,16 @@ export class CPF {
   toString(): string {
     return this.getFormatted()
   }
+
+  equals(cpf: CPF) {
+    if (cpf === this) {
+      return true
+    }
+
+    if (cpf.getRaw() === this.getRaw()) {
+      return true
+    }
+
+    return false
+  }
 }

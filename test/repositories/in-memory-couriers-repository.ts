@@ -15,7 +15,7 @@ export class InMemoryCouriersRepository implements CouriersRepository {
     return courier
   }
 
-  async findByCPF(cpf: CPF): Promise<Courier | null> {
+  async findByCpf(cpf: CPF): Promise<Courier | null> {
     const courier = this.items.find((item) => item.cpf === cpf)
 
     if (!courier) {
@@ -26,8 +26,17 @@ export class InMemoryCouriersRepository implements CouriersRepository {
   }
 
   async create(courier: Courier): Promise<void> {
-    DomainEvents.dispatchEventsForAggregate(courier.id)
-
     this.items.push(courier)
+
+    DomainEvents.dispatchEventsForAggregate(courier.id)
+  }
+
+  async save(courier: Courier): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id.equals(courier.id))
+
+    if (itemIndex >= 0) {
+      this.items[itemIndex] = courier
+      DomainEvents.dispatchEventsForAggregate(courier.id)
+    }
   }
 }

@@ -44,7 +44,7 @@ export class RegisterCourierUseCase {
       return left(authResult.value)
     }
 
-    const courierWithSameCPF = await this.couriersRepository.findByCPF(data.cpf)
+    const courierWithSameCPF = await this.couriersRepository.findByCpf(data.cpf)
 
     if (courierWithSameCPF) {
       return left(new CourierAlreadyExistsError(data.cpf.toString()))

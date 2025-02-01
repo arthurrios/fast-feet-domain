@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository'
 import { User } from '@/domain/user/enterprise/entities/user'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
@@ -32,5 +33,7 @@ export class InMemoryUsersRepository implements UsersRepository {
     const itemIndex = this.items.findIndex((item) => item.id === user.id)
 
     this.items[itemIndex] = user
+
+    DomainEvents.dispatchEventsForAggregate(user.id)
   }
 }
