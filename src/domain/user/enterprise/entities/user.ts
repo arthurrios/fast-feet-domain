@@ -46,6 +46,10 @@ export class User<
     return this.props.role
   }
 
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
   static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityID) {
     const user = new User(
       {
@@ -60,7 +64,7 @@ export class User<
 
   changePassword(newPassword: string) {
     this.props.password = newPassword
-
+    this.touch()
     this.addDomainEvent(new UserPasswordChangedEvent(this))
   }
 }

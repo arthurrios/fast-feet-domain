@@ -4,6 +4,9 @@ import { Slug } from './value-objects/slug'
 import { OrderStatus } from '../../@types/status'
 import { Address } from './value-objects/address'
 import { Optional } from '@/core/types/optional'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { OrderCreatedEvent } from '../events/order-created-event'
+import { CourierAssignedEvent } from '../events/courier-assigned-event'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
@@ -17,7 +20,7 @@ export interface OrderProps {
   updatedAt?: Date | null
 }
 
-export class Order extends Entity<OrderProps> {
+export class Order extends AggregateRoot<OrderProps> {
   get courierId() {
     return this.props.courierId
   }
@@ -88,6 +91,16 @@ export class Order extends Entity<OrderProps> {
       id,
     )
 
+    order.addDomainEvent(new OrderCreatedEvent(order))
+
     return order
+  }
+
+  assignCourier(courierId: UniqueEntityID) {
+    if (!this.props.courierId?.equals(courierId)) {
+      this.props.courierId = courierId
+      this.addDomainEvent(new CourierAssignedEvent(courierId, this.id))
+      this.touch()
+    }
   }
 }
