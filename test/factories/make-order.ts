@@ -11,7 +11,6 @@ export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityID) {
   const order = Order.create(
     {
       recipientId: new UniqueEntityID(),
-      courierId: new UniqueEntityID(),
       title,
       description: faker.lorem.paragraph(),
       slug: Slug.create(title),
