@@ -6,6 +6,7 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { OrderCreatedEvent } from '../events/order-created-event'
 import { CourierAssignedEvent } from '../events/courier-assigned-event'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
+import { OrderAttachmentList } from './order-attachment-list'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
@@ -15,6 +16,7 @@ export interface OrderProps {
   slug: Slug
   coordinate: Coordinate
   status: OrderStatus
+  attachments: OrderAttachmentList
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -48,6 +50,10 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.status
   }
 
+  get attachments() {
+    return this.props.attachments
+  }
+
   get createdAt() {
     return this.props.createdAt
   }
@@ -68,6 +74,11 @@ export class Order extends AggregateRoot<OrderProps> {
 
   set description(description: string) {
     this.props.description = description
+    this.touch()
+  }
+
+  set attachments(attachments: OrderAttachmentList) {
+    this.props.attachments = attachments
     this.touch()
   }
 

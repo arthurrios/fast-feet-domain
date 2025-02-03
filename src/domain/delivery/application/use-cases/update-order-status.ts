@@ -5,11 +5,15 @@ import { OrdersRepository } from '../repository/orders-repository'
 import { OrderStatus } from '../../@types/status'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { OrderAttachment } from '../../enterprise/entities/order-attachment'
+import { OrderAttachmentList } from '../../enterprise/entities/order-attachment-list'
+import { OrderAttachmentsRepository } from '../repository/order-attachments-repository'
 
 interface UpdateOrderStatusUseCaseRequest {
   courierId?: string
   orderId: string
   status: OrderStatus
+  attachmentsIds: string[]
 }
 
 type UpdateOrderStatusUseCaseResponse = Either<
@@ -18,12 +22,16 @@ type UpdateOrderStatusUseCaseResponse = Either<
 >
 
 export class UpdateOrderStatusUseCase {
-  constructor(private ordersRepository: OrdersRepository) {}
+  constructor(
+    private ordersRepository: OrdersRepository,
+    private orderAttachmentsRepository: OrderAttachmentsRepository,
+  ) {}
 
   async execute({
     courierId,
     orderId,
     status,
+    attachmentsIds,
   }: UpdateOrderStatusUseCaseRequest): Promise<UpdateOrderStatusUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId)
 
@@ -49,9 +57,23 @@ export class UpdateOrderStatusUseCase {
         )
       }
 
-      // if (/* photo not provided */) {
-      //   return left(new NotAllowedError('Photo not provided'))
-      // }
+      const orderAttachments = attachmentsIds.map((attachmentId) => {
+        return OrderAttachment.create({
+          attachmentId: new UniqueEntityID(attachmentId),
+          orderId: order.id,
+        })
+      })
+
+      order.attachments = new OrderAttachmentList(orderAttachments)
+
+      const attachments =
+        await this.orderAttachmentsRepository.findManyByOrderId(
+          order.id.toString(),
+        )
+
+      if (!attachments.length) {
+        return left(new NotAllowedError('Photo not provided'))
+      }
     }
 
     order.updateStatus(status)
