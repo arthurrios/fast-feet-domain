@@ -50,7 +50,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
 - Use Cases
   - [x] It must be possible to log in using CPF and password.
   - [x] It must be possible to change a user's password.
-  - [ ] It must be possible to list a user's deliveries.
+  - [x] It must be possible to list a user's deliveries.
 
 - Business Rules
   - [x] The application must have two types of users: courier and/or admin. 
