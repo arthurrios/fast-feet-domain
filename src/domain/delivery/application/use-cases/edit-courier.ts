@@ -7,6 +7,7 @@ import { Courier } from '../../enterprise/entities/courier'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
+import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface EditCourierUseCaseRequest {
   requesterId: string
@@ -14,14 +15,7 @@ interface EditCourierUseCaseRequest {
   name: string
   cpf: string
   email: string
-  address: {
-    street: string
-    number: string
-    neighborhood: string
-    city: string
-    state: string
-    zipCode: string
-  }
+  coordinate: Coordinate
 }
 
 type EditCourierUseCaseResponse = Either<
@@ -38,7 +32,7 @@ export class EditCourierUseCase {
   async execute({
     requesterId,
     courierId,
-    address,
+    coordinate,
     email,
     name,
     cpf,
@@ -57,19 +51,13 @@ export class EditCourierUseCase {
       return left(new ResourceNotFoundError('courier'))
     }
 
-    const addressData = Address.create(
-      address.street,
-      address.number,
-      address.neighborhood,
-      address.city,
-      address.state,
-      address.zipCode,
-    )
-
     courier.name = name
     courier.cpf = CPF.create(cpf)
     courier.email = email
-    courier.address = addressData
+    courier.coordinate = {
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
+    }
 
     await this.couriersRepository.save(courier)
 

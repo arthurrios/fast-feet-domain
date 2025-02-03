@@ -7,6 +7,7 @@ import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { Address } from '../../enterprise/entities/value-objects/address'
+import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface EditRecipientUseCaseRequest {
   requesterId: string
@@ -14,14 +15,7 @@ interface EditRecipientUseCaseRequest {
   name: string
   cpf: string
   email: string
-  address: {
-    street: string
-    number: string
-    neighborhood: string
-    city: string
-    state: string
-    zipCode: string
-  }
+  coordinate: Coordinate
 }
 
 type EditRecipientUseCaseResponse = Either<
@@ -38,7 +32,7 @@ export class EditRecipientUseCase {
   async execute({
     requesterId,
     recipientId,
-    address,
+    coordinate,
     email,
     name,
     cpf,
@@ -57,20 +51,13 @@ export class EditRecipientUseCase {
       return left(new ResourceNotFoundError('recipient'))
     }
 
-    const addressData = Address.create(
-      address.street,
-      address.number,
-      address.neighborhood,
-      address.city,
-      address.state,
-      address.zipCode,
-    )
-
     recipient.name = name
     recipient.cpf = CPF.create(cpf)
     recipient.email = email
-    recipient.address = addressData
-
+    recipient.coordinate = {
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
+    }
     await this.recipientsRepository.save(recipient)
 
     return right({ recipient })

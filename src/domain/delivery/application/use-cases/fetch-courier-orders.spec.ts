@@ -27,14 +27,10 @@ describe('Fetch Courier Orders', () => {
           courierId: courier.id,
           recipientId: new UniqueEntityID('1'),
           status: OrderStatus.PENDING,
-          address: Address.create(
-            'Rua das Margaridas',
-            '123',
-            'Jardim das Flores',
-            'São Paulo',
-            'SP',
-            '12345678',
-          ),
+          coordinate: {
+            latitude: 0,
+            longitude: 0,
+          },
           title: 'Order title',
           description: 'Order description',
         },

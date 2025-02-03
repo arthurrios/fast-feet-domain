@@ -6,6 +6,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeRecipient } from 'test/factories/make-recipient'
 import { authorizationServiceMock } from 'test/factories/mocks/authorization-service-mock'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
+import { generateValidCpf } from 'test/factories/faker-utils/generate-valid-cpf'
+import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 
 let authorizationService: AuthorizationService
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
@@ -38,13 +40,9 @@ describe('Register Recipient', () => {
         email: recipient.email,
         cpf: recipient.cpf.getRaw(),
         password: recipient.password,
-        address: {
-          city: recipient.address.city,
-          neighborhood: recipient.address.neighborhood,
-          number: recipient.address.number,
-          state: recipient.address.state,
-          street: recipient.address.street,
-          zipCode: recipient.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })
@@ -67,13 +65,9 @@ describe('Register Recipient', () => {
         email: recipient.email,
         cpf: recipient.cpf.getRaw(),
         password: recipient.password,
-        address: {
-          city: recipient.address.city,
-          neighborhood: recipient.address.neighborhood,
-          number: recipient.address.number,
-          state: recipient.address.state,
-          street: recipient.address.street,
-          zipCode: recipient.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })
@@ -84,7 +78,7 @@ describe('Register Recipient', () => {
   it('should not register recipient if cpf is already in use', async () => {
     const adminId = new UniqueEntityID('admin-id-123')
 
-    const recipient = makeRecipient()
+    const recipient = makeRecipient({ cpf: CPF.create(generateValidCpf()) })
 
     inMemoryRecipientsRepository.items.push(recipient)
     const newRecipient = makeRecipient({ cpf: recipient.cpf })
@@ -96,13 +90,9 @@ describe('Register Recipient', () => {
         email: newRecipient.email,
         cpf: newRecipient.cpf.getRaw(),
         password: newRecipient.password,
-        address: {
-          city: newRecipient.address.city,
-          neighborhood: newRecipient.address.neighborhood,
-          number: newRecipient.address.number,
-          state: newRecipient.address.state,
-          street: newRecipient.address.street,
-          zipCode: newRecipient.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })

@@ -1,4 +1,4 @@
-import { UserLinkedEntityRepository } from '@/core/shared/repositories/user-linked-entity-repository'
+import { UserLinkedEntityRepository } from '@/core/types/repositories/user-linked-entity-repository'
 import { UserLinkedEntity } from '@/core/shared/entities/user-linked-entity'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 

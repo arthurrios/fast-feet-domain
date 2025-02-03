@@ -1,7 +1,7 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/event-handler'
 import { UserLinkedEntity } from '@/core/shared/entities/user-linked-entity'
-import { UserLinkedEntityRepository } from '@/core/shared/repositories/user-linked-entity-repository'
+import { UserLinkedEntityRepository } from '@/core/types/repositories/user-linked-entity-repository'
 import { UserPasswordChangedEvent } from '@/domain/user/enterprise/events/user-password-changed-event'
 
 export class OnUserPasswordChanged implements EventHandler {

@@ -16,19 +16,13 @@ export function makeCourier(
   const courier = Courier.create(
     {
       name: faker.person.fullName(),
-      cpf: override?.cpf
-        ? CPF.create(override.cpf.getRaw())
-        : CPF.create(generateValidCpf()),
+      cpf: CPF.create(generateValidCpf()),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      address: Address.create(
-        faker.location.streetAddress(),
-        faker.number.int().toString(),
-        getRandomNeighborhood(),
-        faker.location.city(),
-        faker.location.state(),
-        faker.location.zipCode(),
-      ),
+      coordinate: {
+        latitude: faker.location.latitude(),
+        longitude: faker.location.longitude(),
+      },
       createdAt: new Date(),
       ...override,
     },

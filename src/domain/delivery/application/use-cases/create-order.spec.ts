@@ -7,7 +7,6 @@ import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipi
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { CreateOrderUseCase } from './create-order'
 import { makeRecipient } from 'test/factories/make-recipient'
-import { AddressMock } from 'test/factories/mocks/address-mock'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 let authorizationService: AuthorizationService
@@ -44,7 +43,10 @@ describe('Create order', () => {
       recipientId: recipient.id.toString(),
       title: 'Order Title',
       description: 'Order description',
-      address: AddressMock,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(result.isRight()).toBe(true)
@@ -65,7 +67,10 @@ describe('Create order', () => {
       recipientId: '1',
       title: 'Order Title',
       description: 'Order description',
-      address: AddressMock,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(result.isLeft()).toBe(true)
@@ -83,7 +88,10 @@ describe('Create order', () => {
       recipientId: '1',
       title: 'Order Title',
       description: 'Order description',
-      address: AddressMock,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(result.isLeft()).toBe(true)
@@ -102,7 +110,10 @@ describe('Create order', () => {
       courierId: '1',
       title: 'Order Title',
       description: 'Order description',
-      address: AddressMock,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(result.isLeft()).toBe(true)

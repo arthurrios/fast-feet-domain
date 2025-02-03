@@ -7,6 +7,7 @@ import { RecipientsRepository } from '../repository/recipient-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { OrdersRepository } from '../repository/orders-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
+import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface CreateOrderUseCaseRequest {
   requesterId: string
@@ -14,14 +15,7 @@ interface CreateOrderUseCaseRequest {
   courierId?: string
   title: string
   description: string
-  address: {
-    street: string
-    number: string
-    neighborhood: string
-    city: string
-    state: string
-    zipCode: string
-  }
+  coordinate: Coordinate
 }
 
 type CreateOrderUseCaseResponse = Either<
@@ -43,7 +37,7 @@ export class CreateOrderUseCase {
     courierId,
     title,
     description,
-    address,
+    coordinate,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
     const authResult = await this.authorizationService.verifyAdmin(
       new UniqueEntityID(requesterId),
@@ -72,14 +66,7 @@ export class CreateOrderUseCase {
       courierId: courierId ? new UniqueEntityID(courierId) : null,
       title,
       description,
-      address: Address.create(
-        address.street,
-        address.number,
-        address.neighborhood,
-        address.city,
-        address.state,
-        address.zipCode,
-      ),
+      coordinate,
     })
 
     await this.ordersRepository.create(order)

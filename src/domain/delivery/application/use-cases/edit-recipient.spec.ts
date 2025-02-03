@@ -31,8 +31,11 @@ describe('Edit Recipient', () => {
       requesterId: adminId.toValue(),
       name: 'Jane Doe',
       cpf: recipient.cpf.getRaw(),
-      address: recipient.address,
       email: recipient.email,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(inMemoryRecipientsRepository.items[0].name).toBe('Jane Doe')
@@ -48,8 +51,11 @@ describe('Edit Recipient', () => {
       recipientId: recipient.id.toValue(),
       name: 'Jane Doe',
       cpf: recipient.cpf.getRaw(),
-      address: recipient.address,
       email: recipient.email,
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
     })
 
     expect(result.isLeft()).toBe(true)

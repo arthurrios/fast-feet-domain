@@ -8,6 +8,7 @@ import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { Address } from '../../enterprise/entities/value-objects/address'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface RegisterRecipientUseCaseRequest {
   requesterId: string
@@ -16,14 +17,7 @@ interface RegisterRecipientUseCaseRequest {
     email: string
     cpf: string
     password: string
-    address: {
-      street: string
-      number: string
-      neighborhood: string
-      city: string
-      state: string
-      zipCode: string
-    }
+    coordinate: Coordinate
   }
 }
 
@@ -68,14 +62,6 @@ export class RegisterRecipientUseCase {
       cpf: CPF.create(data.cpf),
       password: hashedPassword,
       createdAt: new Date(),
-      address: Address.create(
-        data.address.street,
-        data.address.number,
-        data.address.neighborhood,
-        data.address.city,
-        data.address.state,
-        data.address.zipCode,
-      ),
     })
 
     await this.recipientsRepository.create(recipient)

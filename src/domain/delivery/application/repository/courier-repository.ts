@@ -1,5 +1,5 @@
 import { Courier } from '../../enterprise/entities/courier'
-import { UserLinkedEntityRepository } from '@/core/shared/repositories/user-linked-entity-repository'
+import { UserLinkedEntityRepository } from '@/core/types/repositories/user-linked-entity-repository'
 
 export abstract class CouriersRepository extends UserLinkedEntityRepository<Courier> {
   abstract findById(id: string): Promise<Courier | null>

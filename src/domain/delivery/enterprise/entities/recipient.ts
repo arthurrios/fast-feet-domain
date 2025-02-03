@@ -3,13 +3,14 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Entity } from '@/core/entities/entity'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UserLinkedEntity } from '../../../../core/shared/entities/user-linked-entity'
+import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 export interface RecipientProps {
   name: string
   cpf: CPF
   email: string
   password: string
-  address: Address
+  coordinate: Coordinate
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -34,8 +35,8 @@ export class Recipient
     return this.props.password
   }
 
-  get address() {
-    return this.props.address
+  get coordinate() {
+    return this.props.coordinate
   }
 
   get createdAt() {
@@ -65,8 +66,8 @@ export class Recipient
     this.touch()
   }
 
-  set address(address: Address) {
-    this.props.address = address
+  set coordinate(coordinate: Coordinate) {
+    this.props.coordinate = coordinate
     this.touch()
   }
 
@@ -74,7 +75,6 @@ export class Recipient
     const recipient = new Recipient(
       {
         ...props,
-        address: props.address,
         createdAt: props.createdAt ?? new Date(),
       },
       id,

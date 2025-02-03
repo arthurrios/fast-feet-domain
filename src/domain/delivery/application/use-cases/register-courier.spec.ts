@@ -40,13 +40,9 @@ describe('Register Courier', () => {
         email: courier.email,
         cpf: courier.cpf.getRaw(),
         password: courier.password,
-        address: {
-          city: courier.address.city,
-          neighborhood: courier.address.neighborhood,
-          number: courier.address.number,
-          state: courier.address.state,
-          street: courier.address.street,
-          zipCode: courier.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })
@@ -69,13 +65,9 @@ describe('Register Courier', () => {
         email: courier.email,
         cpf: courier.cpf.getRaw(),
         password: courier.password,
-        address: {
-          city: courier.address.city,
-          neighborhood: courier.address.neighborhood,
-          number: courier.address.number,
-          state: courier.address.state,
-          street: courier.address.street,
-          zipCode: courier.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })
@@ -98,13 +90,9 @@ describe('Register Courier', () => {
         email: newCourier.email,
         cpf: newCourier.cpf.getRaw(),
         password: newCourier.password,
-        address: {
-          city: newCourier.address.city,
-          neighborhood: newCourier.address.neighborhood,
-          number: newCourier.address.number,
-          state: newCourier.address.state,
-          street: newCourier.address.street,
-          zipCode: newCourier.address.zipCode,
+        coordinate: {
+          latitude: 0,
+          longitude: 0,
         },
       },
     })

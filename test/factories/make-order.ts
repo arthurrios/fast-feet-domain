@@ -14,14 +14,10 @@ export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityID) {
       title,
       description: faker.lorem.paragraph(),
       slug: Slug.create(title),
-      address: Address.create(
-        faker.location.streetAddress(),
-        faker.number.int().toString(),
-        getRandomNeighborhood(),
-        faker.location.city(),
-        faker.location.state(),
-        faker.location.zipCode(),
-      ),
+      coordinate: {
+        latitude: faker.location.latitude(),
+        longitude: faker.location.longitude(),
+      },
 
       ...override,
     },
