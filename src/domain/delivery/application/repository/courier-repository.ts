@@ -7,4 +7,5 @@ export abstract class CouriersRepository extends UserLinkedEntityRepository<Cour
   abstract findByCpf(cpf: CPF): Promise<Courier | null>
   abstract create(courier: Courier): Promise<void>
   abstract save(courier: Courier): Promise<void>
+  abstract delete(courier: Courier): Promise<void>
 }

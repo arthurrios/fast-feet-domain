@@ -39,4 +39,12 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
       DomainEvents.dispatchEventsForAggregate(recipient.id)
     }
   }
+
+  async delete(recipient: Recipient): Promise<void> {
+    const itemIndex = this.items.findIndex((item) =>
+      item.id.equals(recipient.id),
+    )
+
+    this.items.splice(itemIndex, 1)
+  }
 }

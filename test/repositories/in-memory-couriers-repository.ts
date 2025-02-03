@@ -39,4 +39,10 @@ export class InMemoryCouriersRepository implements CouriersRepository {
       DomainEvents.dispatchEventsForAggregate(courier.id)
     }
   }
+
+  async delete(courier: Courier): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id.equals(courier.id))
+
+    this.items.splice(itemIndex, 1)
+  }
 }
