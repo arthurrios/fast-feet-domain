@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { CouriersRepository } from '../repository/courier-repository'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
@@ -7,7 +6,6 @@ import { Courier } from '../../enterprise/entities/courier'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
-import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface EditCourierUseCaseRequest {
   requesterId: string

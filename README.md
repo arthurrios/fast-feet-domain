@@ -22,10 +22,10 @@ An API for controlling orders from a fictitious carrier, FastFeet.
     - [x] It must be possible to create a new courier
     - [x] It must be possible to update an existing courier
     - [x] It must be possible to delete an existing courier
-  - [ ] It must be possible to perform CRUD operations for orders
+  - [x] It must be possible to perform CRUD operations for orders
     - [x] It must be possible to create a new order
-    - [ ] It must be possible to update an existing order
-    - [ ] It must be possible to delete an existing order
+    - [x] It must be possible to update an existing order
+    - [x] It must be possible to delete an existing order
   - [x] It must be possible to perform CRUD operations for recipient
     - [x] It must be possible to create a new recipient
     - [x] It must be possible to update an existing recipient
@@ -54,7 +54,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
 
 - Business Rules
   - [x] The application must have two types of users: courier and/or admin. 
-  - [ ] Only **admin** users can perform CRUD operations for orders. 
+  - [x] Only **admin** users can perform CRUD operations for orders. 
   - [x] Only **admin** users can perform CRUD operations for couriers. 
   - [x] Only **admin** users can perform CRUD operations for recipients.
   - [x] Only the admin can change a user's password.

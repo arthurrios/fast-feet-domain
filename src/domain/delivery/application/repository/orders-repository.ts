@@ -18,4 +18,5 @@ export interface OrdersRepository {
   ): Promise<Order[]>
   create(order: Order): Promise<void>
   save(order: Order): Promise<void>
+  delete(order: Order): Promise<void>
 }

@@ -65,4 +65,10 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     DomainEvents.dispatchEventsForAggregate(order.id)
   }
+
+  async delete(order: Order): Promise<void> {
+    const index = this.items.findIndex((item) => item.id.equals(order.id))
+
+    this.items.splice(index, 1)
+  }
 }

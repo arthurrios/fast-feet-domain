@@ -1,8 +1,6 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Slug } from './value-objects/slug'
 import { OrderStatus } from '../../@types/status'
-import { Address } from './value-objects/address'
 import { Optional } from '@/core/types/optional'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { OrderCreatedEvent } from '../events/order-created-event'
@@ -70,6 +68,11 @@ export class Order extends AggregateRoot<OrderProps> {
 
   set description(description: string) {
     this.props.description = description
+    this.touch()
+  }
+
+  set coordinate(coordinate: Coordinate) {
+    this.props.coordinate = coordinate
     this.touch()
   }
 
