@@ -20,7 +20,7 @@ export class OnCourierCreated implements EventHandler {
     await this.createUserUseCase.execute({
       name: courier.name,
       email: courier.email,
-      cpf: courier.cpf,
+      cpf: courier.cpf.getRaw(),
       password: courier.password,
       role: Role.COURIER,
     })

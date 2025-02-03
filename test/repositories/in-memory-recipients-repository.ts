@@ -15,8 +15,8 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     return recipient
   }
 
-  async findByCpf(cpf: CPF): Promise<Recipient | null> {
-    const recipient = this.items.find((item) => item.cpf === cpf)
+  async findByCpf(cpf: string): Promise<Recipient | null> {
+    const recipient = this.items.find((item) => item.cpf.getRaw() === cpf)
 
     if (!recipient) {
       return null

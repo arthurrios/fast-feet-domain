@@ -14,9 +14,16 @@ interface RegisterRecipientUseCaseRequest {
   data: {
     name: string
     email: string
-    cpf: CPF
+    cpf: string
     password: string
-    address: Address
+    address: {
+      street: string
+      number: string
+      neighborhood: string
+      city: string
+      state: string
+      zipCode: string
+    }
   }
 }
 
@@ -49,6 +56,8 @@ export class RegisterRecipientUseCase {
     )
 
     if (courierWithSameCPF) {
+      console.log('RecipientAlreadyExistsError')
+
       return left(new RecipientAlreadyExistsError(data.cpf.toString()))
     }
 
@@ -56,8 +65,17 @@ export class RegisterRecipientUseCase {
 
     const recipient = Recipient.create({
       ...data,
+      cpf: CPF.create(data.cpf),
       password: hashedPassword,
       createdAt: new Date(),
+      address: Address.create(
+        data.address.street,
+        data.address.number,
+        data.address.neighborhood,
+        data.address.city,
+        data.address.state,
+        data.address.zipCode,
+      ),
     })
 
     await this.recipientsRepository.create(recipient)

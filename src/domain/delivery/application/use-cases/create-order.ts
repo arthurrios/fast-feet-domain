@@ -14,7 +14,14 @@ interface CreateOrderUseCaseRequest {
   courierId?: string
   title: string
   description: string
-  address: Address
+  address: {
+    street: string
+    number: string
+    neighborhood: string
+    city: string
+    state: string
+    zipCode: string
+  }
 }
 
 type CreateOrderUseCaseResponse = Either<
@@ -65,7 +72,14 @@ export class CreateOrderUseCase {
       courierId: courierId ? new UniqueEntityID(courierId) : null,
       title,
       description,
-      address,
+      address: Address.create(
+        address.street,
+        address.number,
+        address.neighborhood,
+        address.city,
+        address.state,
+        address.zipCode,
+      ),
     })
 
     await this.ordersRepository.create(order)

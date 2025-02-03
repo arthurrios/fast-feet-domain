@@ -12,9 +12,16 @@ interface EditCourierUseCaseRequest {
   requesterId: string
   courierId: string
   name: string
-  cpf: CPF
+  cpf: string
   email: string
-  address: Address
+  address: {
+    street: string
+    number: string
+    neighborhood: string
+    city: string
+    state: string
+    zipCode: string
+  }
 }
 
 type EditCourierUseCaseResponse = Either<
@@ -50,10 +57,19 @@ export class EditCourierUseCase {
       return left(new ResourceNotFoundError('courier'))
     }
 
+    const addressData = Address.create(
+      address.street,
+      address.number,
+      address.neighborhood,
+      address.city,
+      address.state,
+      address.zipCode,
+    )
+
     courier.name = name
-    courier.cpf = cpf
+    courier.cpf = CPF.create(cpf)
     courier.email = email
-    courier.address = address
+    courier.address = addressData
 
     await this.couriersRepository.save(courier)
 

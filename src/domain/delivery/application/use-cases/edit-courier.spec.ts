@@ -30,7 +30,7 @@ describe('Edit Courier', () => {
       courierId: courier.id.toValue(),
       requesterId: adminId.toValue(),
       name: 'Jane Doe',
-      cpf: courier.cpf,
+      cpf: courier.cpf.getRaw(),
       address: courier.address,
       email: courier.email,
     })
@@ -47,7 +47,7 @@ describe('Edit Courier', () => {
       requesterId: requesterId.toString(),
       courierId: courier.id.toValue(),
       name: 'Jane Doe',
-      cpf: courier.cpf,
+      cpf: courier.cpf.getRaw(),
       address: courier.address,
       email: courier.email,
     })

@@ -4,7 +4,7 @@ import { UserLinkedEntityRepository } from '@/core/shared/repositories/user-link
 
 export abstract class RecipientsRepository extends UserLinkedEntityRepository<Recipient> {
   abstract findById(id: string): Promise<Recipient | null>
-  abstract findByCpf(cpf: CPF): Promise<Recipient | null>
+  abstract findByCpf(cpf: string): Promise<Recipient | null>
   abstract create(recipient: Recipient): Promise<void>
   abstract save(recipient: Recipient): Promise<void>
   abstract delete(recipient: Recipient): Promise<void>

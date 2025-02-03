@@ -34,7 +34,7 @@ describe('Authenticate User', () => {
     inMemoryUsersRepository.items.push(user)
 
     const result = await sut.execute({
-      cpf: user.cpf,
+      cpf: user.cpf.getRaw(),
       password: '123456',
     })
 

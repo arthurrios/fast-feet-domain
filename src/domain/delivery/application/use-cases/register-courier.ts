@@ -14,9 +14,16 @@ interface RegisterCourierUseCaseRequest {
   data: {
     name: string
     email: string
-    cpf: CPF
+    cpf: string
     password: string
-    address: Address
+    address: {
+      street: string
+      number: string
+      neighborhood: string
+      city: string
+      state: string
+      zipCode: string
+    }
   }
 }
 
@@ -54,8 +61,17 @@ export class RegisterCourierUseCase {
 
     const courier = Courier.create({
       ...data,
+      cpf: CPF.create(data.cpf),
       password: hashedPassword,
       createdAt: new Date(),
+      address: Address.create(
+        data.address.street,
+        data.address.number,
+        data.address.neighborhood,
+        data.address.city,
+        data.address.state,
+        data.address.zipCode,
+      ),
     })
 
     await this.couriersRepository.create(courier)

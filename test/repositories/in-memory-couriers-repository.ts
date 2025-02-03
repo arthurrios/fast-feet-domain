@@ -15,8 +15,8 @@ export class InMemoryCouriersRepository implements CouriersRepository {
     return courier
   }
 
-  async findByCpf(cpf: CPF): Promise<Courier | null> {
-    const courier = this.items.find((item) => item.cpf === cpf)
+  async findByCpf(cpf: string): Promise<Courier | null> {
+    const courier = this.items.find((item) => item.cpf.getRaw() === cpf)
 
     if (!courier) {
       return null

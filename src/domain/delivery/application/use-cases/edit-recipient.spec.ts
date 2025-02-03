@@ -30,7 +30,7 @@ describe('Edit Recipient', () => {
       recipientId: recipient.id.toValue(),
       requesterId: adminId.toValue(),
       name: 'Jane Doe',
-      cpf: recipient.cpf,
+      cpf: recipient.cpf.getRaw(),
       address: recipient.address,
       email: recipient.email,
     })
@@ -47,7 +47,7 @@ describe('Edit Recipient', () => {
       requesterId: requesterId.toString(),
       recipientId: recipient.id.toValue(),
       name: 'Jane Doe',
-      cpf: recipient.cpf,
+      cpf: recipient.cpf.getRaw(),
       address: recipient.address,
       email: recipient.email,
     })

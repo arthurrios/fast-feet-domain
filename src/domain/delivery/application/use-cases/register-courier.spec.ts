@@ -6,6 +6,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeCourier } from 'test/factories/make-courier'
 import { authorizationServiceMock } from 'test/factories/mocks/authorization-service-mock'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
+import { generateValidCpf } from 'test/factories/faker-utils/generate-valid-cpf'
+import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 
 let authorizationService: AuthorizationService
 let inMemoryCouriersRepository: InMemoryCouriersRepository
@@ -14,6 +16,7 @@ let sut: RegisterCourierUseCase
 
 describe('Register Courier', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     authorizationService = authorizationServiceMock('admin-id-123')
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     fakeHasher = new FakeHasher()
@@ -32,7 +35,20 @@ describe('Register Courier', () => {
 
     const result = await sut.execute({
       requesterId: adminId.toString(),
-      data: courier,
+      data: {
+        name: courier.name,
+        email: courier.email,
+        cpf: courier.cpf.getRaw(),
+        password: courier.password,
+        address: {
+          city: courier.address.city,
+          neighborhood: courier.address.neighborhood,
+          number: courier.address.number,
+          state: courier.address.state,
+          street: courier.address.street,
+          zipCode: courier.address.zipCode,
+        },
+      },
     })
 
     expect(result.isRight()).toBe(true)
@@ -48,7 +64,20 @@ describe('Register Courier', () => {
 
     const result = await sut.execute({
       requesterId: requesterId.toString(),
-      data: courier,
+      data: {
+        name: courier.name,
+        email: courier.email,
+        cpf: courier.cpf.getRaw(),
+        password: courier.password,
+        address: {
+          city: courier.address.city,
+          neighborhood: courier.address.neighborhood,
+          number: courier.address.number,
+          state: courier.address.state,
+          street: courier.address.street,
+          zipCode: courier.address.zipCode,
+        },
+      },
     })
 
     expect(result.isLeft()).toBe(true)
@@ -57,15 +86,30 @@ describe('Register Courier', () => {
   it('should not register courier if cpf is already in use', async () => {
     const adminId = new UniqueEntityID('admin-id-123')
 
-    const courier = makeCourier()
+    const courier = makeCourier({ cpf: CPF.create(generateValidCpf()) })
 
     inMemoryCouriersRepository.items.push(courier)
     const newCourier = makeCourier({ cpf: courier.cpf })
 
     const result = await sut.execute({
       requesterId: adminId.toString(),
-      data: newCourier,
+      data: {
+        name: newCourier.name,
+        email: newCourier.email,
+        cpf: newCourier.cpf.getRaw(),
+        password: newCourier.password,
+        address: {
+          city: newCourier.address.city,
+          neighborhood: newCourier.address.neighborhood,
+          number: newCourier.address.number,
+          state: newCourier.address.state,
+          street: newCourier.address.street,
+          zipCode: newCourier.address.zipCode,
+        },
+      },
     })
+
+    console.log(result.value)
 
     expect(result.isLeft()).toBe(true)
   })

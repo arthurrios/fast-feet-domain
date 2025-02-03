@@ -7,7 +7,7 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { Role } from '../../@types/role'
 
 interface AuthenticateUseCaseRequest {
-  cpf: CPF
+  cpf: string
   password: string
 }
 
@@ -27,7 +27,7 @@ export class AuthenticateUseCase {
     cpf,
     password,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
-    const user = await this.usersRepository.findByCPF(cpf)
+    const user = await this.usersRepository.findByCPF(CPF.create(cpf))
 
     if (!user) {
       return left(new WrongCredentialsError())

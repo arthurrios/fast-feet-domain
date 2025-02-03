@@ -3,7 +3,6 @@ import {
   Courier,
   CourierProps,
 } from '@/domain/delivery/enterprise/entities/courier'
-import { CourierOrderList } from '@/domain/delivery/enterprise/entities/courier-order-list'
 import { Address } from '@/domain/delivery/enterprise/entities/value-objects/address'
 import { faker } from '@faker-js/faker'
 import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
@@ -17,10 +16,11 @@ export function makeCourier(
   const courier = Courier.create(
     {
       name: faker.person.fullName(),
-      cpf: CPF.create(generateValidCpf()),
+      cpf: override?.cpf
+        ? CPF.create(override.cpf.getRaw())
+        : CPF.create(generateValidCpf()),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      orders: new CourierOrderList(),
       address: Address.create(
         faker.location.streetAddress(),
         faker.number.int().toString(),
@@ -29,6 +29,7 @@ export function makeCourier(
         faker.location.state(),
         faker.location.zipCode(),
       ),
+      createdAt: new Date(),
       ...override,
     },
     id,

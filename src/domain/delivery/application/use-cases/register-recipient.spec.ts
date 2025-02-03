@@ -33,7 +33,20 @@ describe('Register Recipient', () => {
 
     const result = await sut.execute({
       requesterId: adminId.toString(),
-      data: recipient,
+      data: {
+        name: recipient.name,
+        email: recipient.email,
+        cpf: recipient.cpf.getRaw(),
+        password: recipient.password,
+        address: {
+          city: recipient.address.city,
+          neighborhood: recipient.address.neighborhood,
+          number: recipient.address.number,
+          state: recipient.address.state,
+          street: recipient.address.street,
+          zipCode: recipient.address.zipCode,
+        },
+      },
     })
 
     expect(result.isRight()).toBe(true)
@@ -49,7 +62,20 @@ describe('Register Recipient', () => {
 
     const result = await sut.execute({
       requesterId: requesterId.toString(),
-      data: recipient,
+      data: {
+        name: recipient.name,
+        email: recipient.email,
+        cpf: recipient.cpf.getRaw(),
+        password: recipient.password,
+        address: {
+          city: recipient.address.city,
+          neighborhood: recipient.address.neighborhood,
+          number: recipient.address.number,
+          state: recipient.address.state,
+          street: recipient.address.street,
+          zipCode: recipient.address.zipCode,
+        },
+      },
     })
 
     expect(result.isLeft()).toBe(true)
@@ -65,8 +91,23 @@ describe('Register Recipient', () => {
 
     const result = await sut.execute({
       requesterId: adminId.toString(),
-      data: newRecipient,
+      data: {
+        name: newRecipient.name,
+        email: newRecipient.email,
+        cpf: newRecipient.cpf.getRaw(),
+        password: newRecipient.password,
+        address: {
+          city: newRecipient.address.city,
+          neighborhood: newRecipient.address.neighborhood,
+          number: newRecipient.address.number,
+          state: newRecipient.address.state,
+          street: newRecipient.address.street,
+          zipCode: newRecipient.address.zipCode,
+        },
+      },
     })
+
+    console.log(result.value)
 
     expect(result.isLeft()).toBe(true)
   })

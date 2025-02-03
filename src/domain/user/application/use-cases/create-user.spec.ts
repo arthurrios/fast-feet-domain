@@ -21,7 +21,13 @@ describe('Create User', () => {
   it('should create a user succesfully', async () => {
     const user = makeUser({ cpf: CPF.create(generateValidCpf()) })
 
-    const result = await sut.execute(user)
+    const result = await sut.execute({
+      name: user.name,
+      cpf: user.cpf.getRaw(),
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    })
 
     expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
@@ -30,7 +36,13 @@ describe('Create User', () => {
   })
   it('should hash user password upon registration', async () => {
     const user = makeUser({ password: '123456' })
-    const result = await sut.execute(user)
+    const result = await sut.execute({
+      name: user.name,
+      cpf: user.cpf.getRaw(),
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    })
 
     const hashedPassword = await fakeHasher.hash('123456')
 
