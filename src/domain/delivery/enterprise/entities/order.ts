@@ -72,11 +72,6 @@ export class Order extends AggregateRoot<OrderProps> {
     this.touch()
   }
 
-  set status(status: OrderStatus) {
-    this.props.status = status
-    this.touch()
-  }
-
   static create(
     props: Optional<OrderProps, 'createdAt' | 'slug' | 'status' | 'courierId'>,
     id?: UniqueEntityID,
@@ -102,5 +97,10 @@ export class Order extends AggregateRoot<OrderProps> {
       this.addDomainEvent(new CourierAssignedEvent(courierId, this.id))
       this.touch()
     }
+  }
+
+  updateStatus(status: OrderStatus) {
+    this.props.status = status
+    this.touch()
   }
 }
