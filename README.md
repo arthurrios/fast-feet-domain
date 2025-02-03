@@ -40,7 +40,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
 - Business Rules
  - [ ] To mark an order as delivered, a photo must be provided.
  - [x] Only the courier who picked up the order can mark it as delivered.
- - [ ] A courier must not be able to list another courier's orders.
+ - [x] A courier must not be able to list another courier's orders.
 
 ### User
 

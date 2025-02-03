@@ -1,4 +1,5 @@
 import { DomainEvents } from '@/core/events/domain-events'
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { OrdersRepository } from '@/domain/delivery/application/repository/orders-repository'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
 
@@ -12,6 +13,17 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     }
 
     return order
+  }
+
+  async findManyByCourierId(
+    courierId: string,
+    { page }: PaginationParams,
+  ): Promise<Order[]> {
+    const orders = this.items
+      .filter((item) => item.courierId?.toString() === courierId)
+      .slice((page - 1) * 20, page * 20)
+
+    return orders
   }
 
   async create(order: Order): Promise<void> {

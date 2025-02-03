@@ -88,11 +88,6 @@ describe('Fetch User Deliveries', () => {
 
     inMemoryUserDeliveriesRepository.items.push(...deliveries)
 
-    const result = await sut.execute({
-      userId: user.id.toString(),
-      page: 1,
-    })
-
     const page1 = await sut.execute({ userId: user.id.toString(), page: 1 })
     expect(page1.isRight() && page1.value.deliveries).toHaveLength(20)
   })
