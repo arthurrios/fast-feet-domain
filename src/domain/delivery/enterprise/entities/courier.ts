@@ -1,17 +1,14 @@
-import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { CourierRegisteredEvent } from '../events/courier-registered-event'
 import { UserLinkedEntity } from '../../../../core/shared/entities/user-linked-entity'
-import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 export interface CourierProps {
   name: string
   cpf: CPF
   email: string
   password: string
-  coordinate: Coordinate
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -34,10 +31,6 @@ export class Courier
 
   get password() {
     return this.props.password
-  }
-
-  get coordinate() {
-    return this.props.coordinate
   }
 
   get createdAt() {
@@ -64,11 +57,6 @@ export class Courier
 
   set email(email: string) {
     this.props.email = email
-    this.touch()
-  }
-
-  set coordinate(coordinate: Coordinate) {
-    this.props.coordinate = coordinate
     this.touch()
   }
 

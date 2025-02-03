@@ -6,7 +6,6 @@ import { Recipient } from '../../enterprise/entities/recipient'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 
 interface EditRecipientUseCaseRequest {
@@ -32,7 +31,6 @@ export class EditRecipientUseCase {
   async execute({
     requesterId,
     recipientId,
-    coordinate,
     email,
     name,
     cpf,
@@ -54,10 +52,7 @@ export class EditRecipientUseCase {
     recipient.name = name
     recipient.cpf = CPF.create(cpf)
     recipient.email = email
-    recipient.coordinate = {
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude,
-    }
+
     await this.recipientsRepository.save(recipient)
 
     return right({ recipient })

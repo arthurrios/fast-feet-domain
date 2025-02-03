@@ -35,7 +35,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - [x] It must be possible to pick up an order.
   - [x] It must be possible to mark an order as delivered.
   - [x] It must be possible to mark an order as returned.
-  - [ ] It must be possible to list orders with delivery addresses near the courier's location.
+  - [x] It must be possible to list orders with delivery addresses near the courier's location.
 
 - Business Rules
  - [ ] To mark an order as delivered, a photo must be provided.

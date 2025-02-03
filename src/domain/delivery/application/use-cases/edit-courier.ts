@@ -15,7 +15,6 @@ interface EditCourierUseCaseRequest {
   name: string
   cpf: string
   email: string
-  coordinate: Coordinate
 }
 
 type EditCourierUseCaseResponse = Either<
@@ -32,7 +31,6 @@ export class EditCourierUseCase {
   async execute({
     requesterId,
     courierId,
-    coordinate,
     email,
     name,
     cpf,
@@ -54,10 +52,6 @@ export class EditCourierUseCase {
     courier.name = name
     courier.cpf = CPF.create(cpf)
     courier.email = email
-    courier.coordinate = {
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude,
-    }
 
     await this.couriersRepository.save(courier)
 

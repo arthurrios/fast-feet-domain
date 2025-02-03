@@ -1,7 +1,11 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import { OrdersRepository } from '@/domain/delivery/application/repository/orders-repository'
+import {
+  FindManyNearbyParams,
+  OrdersRepository,
+} from '@/domain/delivery/application/repository/orders-repository'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
+import { getDistanceBetweenCoordinates } from 'test/utils/get-distance-between-coordinates'
 
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = []
@@ -24,6 +28,28 @@ export class InMemoryOrdersRepository implements OrdersRepository {
       .slice((page - 1) * 20, page * 20)
 
     return orders
+  }
+
+  async findManyNearbyCourier(
+    courierCoordinate: FindManyNearbyParams,
+    { page }: PaginationParams,
+  ): Promise<Order[]> {
+    return this.items
+      .filter((item) => {
+        const distance = getDistanceBetweenCoordinates(
+          {
+            latitude: courierCoordinate.latitude,
+            longitude: courierCoordinate.longitude,
+          },
+          {
+            latitude: item.coordinate.latitude,
+            longitude: item.coordinate.longitude,
+          },
+        )
+
+        return distance < 10
+      })
+      .slice((page - 1) * 20, page * 20)
   }
 
   async create(order: Order): Promise<void> {

@@ -17,10 +17,6 @@ export function makeRecipient(
       cpf: CPF.create(generateValidCpf()),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      coordinate: {
-        latitude: faker.location.latitude(),
-        longitude: faker.location.longitude(),
-      },
       createdAt: new Date(),
       ...override,
     },

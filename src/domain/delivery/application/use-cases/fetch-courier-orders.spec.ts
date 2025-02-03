@@ -4,7 +4,6 @@ import { makeCourier } from 'test/factories/make-courier'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Order } from '../../enterprise/entities/order'
 import { OrderStatus } from '../../@types/status'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { makeOrder } from 'test/factories/make-order'
 
@@ -22,7 +21,7 @@ describe('Fetch Courier Orders', () => {
     const courier = makeCourier({ name: 'John Doe' })
 
     const orders: Order[] = Array.from({ length: 22 }).map((_, index) => {
-      return Order.create(
+      return makeOrder(
         {
           courierId: courier.id,
           recipientId: new UniqueEntityID('1'),
@@ -42,7 +41,7 @@ describe('Fetch Courier Orders', () => {
 
     const page1 = await sut.execute({
       courierId: courier.id.toString(),
-      page: 1,
+      params: { page: 1 },
     })
     expect(page1.isRight() && page1.value.orders).toHaveLength(20)
   })
@@ -60,7 +59,7 @@ describe('Fetch Courier Orders', () => {
 
     const result = await sut.execute({
       courierId: courier1.id.toString(),
-      page: 1,
+      params: { page: 1 },
     })
 
     expect(result.isRight() && result.value.orders).toHaveLength(1)
