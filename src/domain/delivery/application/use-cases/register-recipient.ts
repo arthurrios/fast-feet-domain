@@ -57,6 +57,7 @@ export class RegisterRecipientUseCase {
     const recipient = Recipient.create({
       ...data,
       password: hashedPassword,
+      createdAt: new Date(),
     })
 
     await this.recipientsRepository.create(recipient)

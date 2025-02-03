@@ -55,6 +55,7 @@ export class RegisterCourierUseCase {
     const courier = Courier.create({
       ...data,
       password: hashedPassword,
+      createdAt: new Date(),
     })
 
     await this.couriersRepository.create(courier)

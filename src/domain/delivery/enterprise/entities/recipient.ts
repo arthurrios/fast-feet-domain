@@ -1,4 +1,3 @@
-import { RecipientOrderList } from './recipient-order-list'
 import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Entity } from '@/core/entities/entity'
@@ -10,8 +9,9 @@ export interface RecipientProps {
   cpf: CPF
   email: string
   password: string
-  orders?: RecipientOrderList | null
   address: Address
+  createdAt: Date
+  updatedAt?: Date | null
 }
 
 export class Recipient
@@ -34,20 +34,48 @@ export class Recipient
     return this.props.password
   }
 
-  get orders() {
-    return this.props.orders
-  }
-
   get address() {
     return this.props.address
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  set name(name: string) {
+    this.props.name = name
+    this.touch()
+  }
+
+  set cpf(cpf: CPF) {
+    this.props.cpf = cpf
+    this.touch()
+  }
+
+  set email(email: string) {
+    this.props.email = email
+    this.touch()
+  }
+
+  set address(address: Address) {
+    this.props.address = address
+    this.touch()
   }
 
   static create(props: RecipientProps, id?: UniqueEntityID): Recipient {
     const recipient = new Recipient(
       {
         ...props,
-        orders: props.orders ?? new RecipientOrderList(),
         address: props.address,
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     )

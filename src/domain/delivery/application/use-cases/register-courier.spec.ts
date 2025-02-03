@@ -14,7 +14,6 @@ let sut: RegisterCourierUseCase
 
 describe('Register Courier', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     authorizationService = authorizationServiceMock('admin-id-123')
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     fakeHasher = new FakeHasher()

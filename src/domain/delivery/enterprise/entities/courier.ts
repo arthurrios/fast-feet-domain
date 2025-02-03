@@ -1,4 +1,3 @@
-import { CourierOrderList } from './courier-order-list'
 import { Address } from './value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
@@ -11,8 +10,9 @@ export interface CourierProps {
   cpf: CPF
   email: string
   password: string
-  orders?: CourierOrderList | null
   address: Address
+  createdAt: Date
+  updatedAt?: Date | null
 }
 
 export class Courier
@@ -35,20 +35,48 @@ export class Courier
     return this.props.password
   }
 
-  get orders() {
-    return this.props.orders
-  }
-
   get address() {
     return this.props.address
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  set name(name: string) {
+    this.props.name = name
+    this.touch()
+  }
+
+  set cpf(cpf: CPF) {
+    this.props.cpf = cpf
+    this.touch()
+  }
+
+  set email(email: string) {
+    this.props.email = email
+    this.touch()
+  }
+
+  set address(address: Address) {
+    this.props.address = address
+    this.touch()
   }
 
   static create(props: CourierProps, id?: UniqueEntityID): Courier {
     const courier = new Courier(
       {
         ...props,
-        orders: props.orders ?? new CourierOrderList(),
         address: props.address,
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     )

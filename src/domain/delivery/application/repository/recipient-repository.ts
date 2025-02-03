@@ -6,4 +6,5 @@ export abstract class RecipientsRepository extends UserLinkedEntityRepository<Re
   abstract findById(id: string): Promise<Recipient | null>
   abstract findByCpf(cpf: CPF): Promise<Recipient | null>
   abstract create(recipient: Recipient): Promise<void>
+  abstract save(recipient: Recipient): Promise<void>
 }
