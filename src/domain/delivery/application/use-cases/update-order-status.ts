@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { OrdersRepository } from '../repository/orders-repository'
 import { OrderStatus } from '../../@types/status'
 import { NotAllowedError } from './errors/not-allowed-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface UpdateOrderStatusUseCaseRequest {
   courierId?: string
@@ -30,6 +31,14 @@ export class UpdateOrderStatusUseCase {
       return left(new ResourceNotFoundError('order'))
     }
 
+    if (status === OrderStatus.PICKED_UP) {
+      if (!courierId) {
+        return left(new NotAllowedError('Courier is required'))
+      }
+
+      order.assignCourier(new UniqueEntityID(courierId))
+    }
+
     const courierIsNotAssignedCourier =
       courierId && order.courierId?.toValue() !== courierId
 
@@ -46,6 +55,8 @@ export class UpdateOrderStatusUseCase {
     }
 
     order.updateStatus(status)
+
+    await this.ordersRepository.save(order)
 
     return right({ order })
   }

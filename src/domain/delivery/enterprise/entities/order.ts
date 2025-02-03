@@ -80,7 +80,7 @@ export class Order extends AggregateRoot<OrderProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        status: props.status ?? OrderStatus.AWAITING,
+        status: props.status ?? OrderStatus.PENDING,
         createdAt: props.createdAt ?? new Date(),
       },
       id,
@@ -94,6 +94,7 @@ export class Order extends AggregateRoot<OrderProps> {
   assignCourier(courierId: UniqueEntityID) {
     if (!this.props.courierId?.equals(courierId)) {
       this.props.courierId = courierId
+      this.props.status = OrderStatus.AWAITING
       this.addDomainEvent(new CourierAssignedEvent(courierId, this.id))
       this.touch()
     }

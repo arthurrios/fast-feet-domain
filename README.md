@@ -31,15 +31,15 @@ An API for controlling orders from a fictitious carrier, FastFeet.
     - [x] It must be possible to update an existing recipient
     - [x] It must be possible to delete an existing recipient
   
-  - [ ] It must be possible to mark an order as "waiting" (Available for pickup).
-  - [ ] It must be possible to pick up an order.
-  - [ ] It must be possible to mark an order as delivered.
-  - [ ] It must be possible to mark an order as returned.
+  - [x] It must be possible to mark an order as "waiting" (Available for pickup).
+  - [x] It must be possible to pick up an order.
+  - [x] It must be possible to mark an order as delivered.
+  - [x] It must be possible to mark an order as returned.
   - [ ] It must be possible to list orders with delivery addresses near the courier's location.
 
 - Business Rules
  - [ ] To mark an order as delivered, a photo must be provided.
- - [ ] Only the courier who picked up the order can mark it as delivered.
+ - [x] Only the courier who picked up the order can mark it as delivered.
  - [ ] A courier must not be able to list another courier's orders.
 
 ### User
