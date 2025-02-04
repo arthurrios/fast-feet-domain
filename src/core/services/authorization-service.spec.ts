@@ -20,7 +20,7 @@ describe('Authorization Service', () => {
 
     inMemoryUsersRepository.create(adminUser)
 
-    const result = await authorizationService.verifyAdmin(adminId)
+    const result = await authorizationService.verifyRole(adminId, Role.ADMIN)
 
     expect(result.isRight()).toBe(true)
   })
@@ -28,7 +28,7 @@ describe('Authorization Service', () => {
   it('should deny access if the user is not found', async () => {
     const invalidId = new UniqueEntityID('invalid-id-123')
 
-    const result = await authorizationService.verifyAdmin(invalidId)
+    const result = await authorizationService.verifyRole(invalidId, Role.ADMIN)
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(UnauthorizedAdminOnlyError)
@@ -40,7 +40,7 @@ describe('Authorization Service', () => {
 
     inMemoryUsersRepository.create(user)
 
-    const result = await authorizationService.verifyAdmin(userId)
+    const result = await authorizationService.verifyRole(userId, Role.ADMIN)
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(UnauthorizedAdminOnlyError)

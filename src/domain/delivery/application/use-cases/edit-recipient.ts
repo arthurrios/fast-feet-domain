@@ -7,6 +7,7 @@ import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
+import { Role } from '@/domain/user/@types/role'
 
 interface EditRecipientUseCaseRequest {
   requesterId: string
@@ -35,8 +36,9 @@ export class EditRecipientUseCase {
     name,
     cpf,
   }: EditRecipientUseCaseRequest): Promise<EditRecipientUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

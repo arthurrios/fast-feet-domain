@@ -6,6 +6,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { HashGenerator } from '../cryptography/hash-generator'
+import { Role } from '../../@types/role'
 
 interface ChangeUserPasswordUseCaseRequest {
   requesterId: string
@@ -30,10 +31,10 @@ export class ChangeUserPasswordUseCase {
     userId,
     newPassword,
   }: ChangeUserPasswordUseCaseRequest): Promise<ChangeUserPasswordUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
-
     if (authResult.isLeft()) {
       return left(authResult.value)
     }

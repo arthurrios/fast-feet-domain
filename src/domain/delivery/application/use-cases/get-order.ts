@@ -5,6 +5,7 @@ import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-ad
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { OrdersRepository } from '../repository/orders-repository'
+import { Role } from '@/domain/user/@types/role'
 
 interface GetOrderUseCaseRequest {
   requesterId: string
@@ -26,8 +27,9 @@ export class GetOrderUseCase {
     requesterId,
     orderId,
   }: GetOrderUseCaseRequest): Promise<GetOrderUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

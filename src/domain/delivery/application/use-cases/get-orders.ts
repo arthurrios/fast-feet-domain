@@ -5,6 +5,7 @@ import { Order } from '../../enterprise/entities/order'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { OrdersRepository } from '../repository/orders-repository'
+import { Role } from '@/domain/user/@types/role'
 
 interface GetOrdersUseCaseRequest {
   requesterId: string
@@ -26,8 +27,9 @@ export class GetOrdersUseCase {
     requesterId,
     params,
   }: GetOrdersUseCaseRequest): Promise<GetOrdersUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

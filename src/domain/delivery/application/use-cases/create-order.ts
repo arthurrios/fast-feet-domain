@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { Order } from '../../enterprise/entities/order'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CouriersRepository } from '../repository/courier-repository'
@@ -8,6 +7,8 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { OrdersRepository } from '../repository/orders-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
+import { Role } from '@/domain/user/@types/role'
+import { OrderAttachmentList } from '../../enterprise/entities/order-attachment-list'
 
 interface CreateOrderUseCaseRequest {
   requesterId: string
@@ -39,8 +40,9 @@ export class CreateOrderUseCase {
     description,
     coordinate,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {
@@ -67,6 +69,8 @@ export class CreateOrderUseCase {
       title,
       description,
       coordinate,
+      attachments: new OrderAttachmentList(),
+      createdAt: new Date(),
     })
 
     await this.ordersRepository.create(order)

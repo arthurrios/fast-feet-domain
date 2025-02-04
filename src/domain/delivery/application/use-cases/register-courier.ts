@@ -5,10 +5,10 @@ import { HashGenerator } from '@/domain/user/application/cryptography/hash-gener
 import { CouriersRepository } from '../repository/courier-repository'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
+import { Role } from '@/domain/user/@types/role'
 
 interface RegisterCourierUseCaseRequest {
   requesterId: string
@@ -37,8 +37,9 @@ export class RegisterCourierUseCase {
     requesterId,
     data,
   }: RegisterCourierUseCaseRequest): Promise<RegisterCourierUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

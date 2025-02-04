@@ -7,7 +7,7 @@ export function authorizationServiceMock(
   adminId: string,
 ): AuthorizationService {
   return {
-    verifyAdmin: vi.fn(
+    verifyRole: vi.fn(
       async (
         id: UniqueEntityID,
       ): Promise<Either<UnauthorizedAdminOnlyError, void>> => {

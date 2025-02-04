@@ -6,6 +6,7 @@ import { Courier } from '../../enterprise/entities/courier'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorizationService } from '@/core/services/authorization-service'
+import { Role } from '@/domain/user/@types/role'
 
 interface EditCourierUseCaseRequest {
   requesterId: string
@@ -33,8 +34,9 @@ export class EditCourierUseCase {
     name,
     cpf,
   }: EditCourierUseCaseRequest): Promise<EditCourierUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

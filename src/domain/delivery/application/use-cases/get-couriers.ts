@@ -5,6 +5,7 @@ import { Courier } from '../../enterprise/entities/courier'
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { CouriersRepository } from '../repository/courier-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Role } from '@/domain/user/@types/role'
 
 interface GetCouriersUseCaseRequest {
   requesterId: string
@@ -26,8 +27,9 @@ export class GetCouriersUseCase {
     requesterId,
     params,
   }: GetCouriersUseCaseRequest): Promise<GetCouriersUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

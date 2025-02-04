@@ -5,6 +5,7 @@ import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-ad
 import { AuthorizationService } from '@/core/services/authorization-service'
 import { RecipientsRepository } from '../repository/recipient-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Role } from '@/domain/user/@types/role'
 
 interface GetRecipientUseCaseRequest {
   requesterId: string
@@ -26,8 +27,9 @@ export class GetRecipientUseCase {
     requesterId,
     recipientId,
   }: GetRecipientUseCaseRequest): Promise<GetRecipientUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

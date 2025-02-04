@@ -1,9 +1,10 @@
 import { AuthorizationService } from '@/core/services/authorization-service'
-import { OrdersRepository } from '../repository/order-repository'
 import { UnauthorizedAdminOnlyError } from '@/core/errors/errors/unauthorized-admin-only-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Either, left, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { OrdersRepository } from '../repository/orders-repository'
+import { Role } from '@/domain/user/@types/role'
 
 interface DeleteOrderUseCaseRequest {
   requesterId: string
@@ -25,8 +26,9 @@ export class DeleteOrderUseCase {
     requesterId,
     orderId,
   }: DeleteOrderUseCaseRequest): Promise<DeleteOrderUseCaseResponse> {
-    const authResult = await this.authorizationService.verifyAdmin(
+    const authResult = await this.authorizationService.verifyRole(
       new UniqueEntityID(requesterId),
+      Role.ADMIN,
     )
 
     if (authResult.isLeft()) {

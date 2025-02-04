@@ -7,12 +7,13 @@ import { Role } from '@/domain/user/@types/role'
 export class AuthorizationService {
   constructor(private usersRepository: UsersRepository) {}
 
-  async verifyAdmin(
+  async verifyRole(
     id: UniqueEntityID,
+    requiredRole: Role,
   ): Promise<Either<UnauthorizedAdminOnlyError, void>> {
     const user = await this.usersRepository.findById(id.toValue())
 
-    if (!user || user.role !== Role.ADMIN) {
+    if (!user || user.role !== requiredRole) {
       console.warn(
         `Authorization denied. User with ID: ${id.toValue()} attempted to access an admin-only resource.`,
       )
