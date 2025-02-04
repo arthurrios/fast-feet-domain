@@ -7,6 +7,7 @@ import { OrderCreatedEvent } from '../events/order-created-event'
 import { CourierAssignedEvent } from '../events/courier-assigned-event'
 import { Coordinate } from 'test/utils/get-distance-between-coordinates'
 import { OrderAttachmentList } from './order-attachment-list'
+import { OrderStatusChangedEvent } from '../events/order-status-changed'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
@@ -118,5 +119,7 @@ export class Order extends AggregateRoot<OrderProps> {
   updateStatus(status: OrderStatus) {
     this.props.status = status
     this.touch()
+
+    this.addDomainEvent(new OrderStatusChangedEvent(this))
   }
 }

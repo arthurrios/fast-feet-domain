@@ -38,7 +38,7 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - [x] It must be possible to list orders with delivery addresses near the courier's location.
 
 - Business Rules
- - [ ] To mark an order as delivered, a photo must be provided.
+ - [x] To mark an order as delivered, a photo must be provided.
  - [x] Only the courier who picked up the order can mark it as delivered.
  - [x] A courier must not be able to list another courier's orders.
 
@@ -65,6 +65,6 @@ An API for controlling orders from a fictitious carrier, FastFeet.
   - Notification
 
 - Use Cases
-  - [ ] It must be possible to notify the recipient whenever the order's status changes.
+  - [x] It must be possible to notify the recipient whenever the order's status changes.
 
 
