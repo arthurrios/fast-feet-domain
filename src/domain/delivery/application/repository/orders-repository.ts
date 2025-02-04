@@ -16,6 +16,7 @@ export interface OrdersRepository {
     courierCoordinate: FindManyNearbyParams,
     params: PaginationParams,
   ): Promise<Order[]>
+  findMany(params: PaginationParams): Promise<Order[]>
   create(order: Order): Promise<void>
   save(order: Order): Promise<void>
   delete(order: Order): Promise<void>

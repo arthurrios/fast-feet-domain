@@ -52,6 +52,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async findMany({ page }: PaginationParams): Promise<Order[]> {
+    const orders = this.items.slice((page - 1) * 20, page * 20)
+
+    return orders
+  }
+
   async create(order: Order): Promise<void> {
     this.items.push(order)
 

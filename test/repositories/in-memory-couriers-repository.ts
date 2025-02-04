@@ -1,4 +1,5 @@
 import { DomainEvents } from '@/core/events/domain-events'
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { CouriersRepository } from '@/domain/delivery/application/repository/courier-repository'
 import { Courier } from '@/domain/delivery/enterprise/entities/courier'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
@@ -23,6 +24,12 @@ export class InMemoryCouriersRepository implements CouriersRepository {
     }
 
     return courier
+  }
+
+  async findMany({ page }: PaginationParams): Promise<Courier[]> {
+    const couriers = this.items.slice((page - 1) * 20, page * 20)
+
+    return couriers
   }
 
   async create(courier: Courier): Promise<void> {
