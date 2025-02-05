@@ -8,8 +8,8 @@ export class MockUserLinkedRepository
   public items: UserLinkedEntity[] = []
   public saveCalls: UserLinkedEntity[] = []
 
-  async findByCpf(cpf: CPF): Promise<UserLinkedEntity | null> {
-    return this.items.find((item) => item.cpf.equals(cpf)) || null
+  async findByCpf(cpf: string): Promise<UserLinkedEntity | null> {
+    return this.items.find((item) => item.cpf.toString() === cpf) || null
   }
 
   async save(entity: UserLinkedEntity): Promise<void> {

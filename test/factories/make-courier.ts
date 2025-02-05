@@ -3,9 +3,7 @@ import {
   Courier,
   CourierProps,
 } from '@/domain/delivery/enterprise/entities/courier'
-import { Address } from '@/domain/delivery/enterprise/entities/value-objects/address'
 import { faker } from '@faker-js/faker'
-import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
 import { CPF } from '@/domain/user/enterprise/entities/value-objects/cpf'
 import { generateValidCpf } from './faker-utils/generate-valid-cpf'
 

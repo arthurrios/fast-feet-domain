@@ -2,8 +2,7 @@ import { faker } from '@faker-js/faker'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Order, OrderProps } from '@/domain/delivery/enterprise/entities/order'
 import { Slug } from '@/domain/delivery/enterprise/entities/value-objects/slug'
-import { Address } from '@/domain/delivery/enterprise/entities/value-objects/address'
-import { getRandomNeighborhood } from './faker-utils/get-random-neighborhood'
+import { OrderAttachmentList } from '@/domain/delivery/enterprise/entities/order-attachment-list'
 
 export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityID) {
   const title = faker.lorem.sentence()
@@ -18,7 +17,8 @@ export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityID) {
         latitude: faker.location.latitude(),
         longitude: faker.location.longitude(),
       },
-
+      createdAt: new Date(),
+      attachments: new OrderAttachmentList(),
       ...override,
     },
     id,
